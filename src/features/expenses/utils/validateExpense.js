@@ -1,76 +1,76 @@
-import { EXPENSE_CATEGORIES } from '../models/expense.model.js';
+import { EXPENSE_CATEGORIES } from "../models/expense.model.js";
 
 export function validateExpenseTitle(title) {
-  if (title === null || title === undefined || typeof title !== 'string') {
-    return 'title is required';
-  }
+	if (title === null || title === undefined || typeof title !== "string") {
+		return "title is required";
+	}
 
-  const trimmedTitle = title.trim();
+	const trimmedTitle = title.trim();
 
-  if (trimmedTitle.length === 0) {
-    return 'title cannot be empty';
-  }
+	if (trimmedTitle.length === 0) {
+		return "title cannot be empty";
+	}
 
-  if (trimmedTitle.length > 100) {
-    return 'title must be less than 100 characters';
-  }
+	if (trimmedTitle.length > 100) {
+		return "title must be less than 100 characters";
+	}
 
-  return null;
+	return null;
 }
 
 export function validateExpenseAmount(amount) {
-  if (amount === '' || amount === null || amount === undefined) {
-    return 'amount is required';
-  }
+	if (amount === "" || amount === null || amount === undefined) {
+		return "amount is required";
+	}
 
-  const numericAmount = Number(amount);
+	const numericAmount = Number(amount);
 
-  if (Number.isNaN(numericAmount)) {
-    return 'amount must be a valid number';
-  }
+	if (Number.isNaN(numericAmount)) {
+		return "amount must be a valid number";
+	}
 
-  if (numericAmount <= 0) {
-    return 'amount must be greater than zero';
-  }
+	if (numericAmount <= 0) {
+		return "amount must be greater than zero";
+	}
 
-  if (numericAmount > 1000000) {
-    return 'amount must be less than 1,000,000';
-  }
+	if (numericAmount > 1000000) {
+		return "amount must be less than 1,000,000";
+	}
 
-  return null;
+	return null;
 }
 
 export function validateExpenseCategory(category) {
-  if (!category) {
-    return 'category is required';
-  }
+	if (!category) {
+		return "category is required";
+	}
 
-  const validCategories = Object.values(EXPENSE_CATEGORIES);
+	const validCategories = Object.values(EXPENSE_CATEGORIES);
 
-  if (!validCategories.includes(category)) {
-    return 'invalid category selected';
-  }
+	if (!validCategories.includes(category)) {
+		return "invalid category selected";
+	}
 
-  return null;
+	return null;
 }
 
 export function validateExpense(expenseData) {
-  const errors = {};
+	const errors = {};
 
-  const titleError = validateExpenseTitle(expenseData.title);
-  if (titleError) {
-    errors.title = titleError;
-  }
+	const titleError = validateExpenseTitle(expenseData.title);
+	if (titleError) {
+		errors.title = titleError;
+	}
 
-  const amountError = validateExpenseAmount(expenseData.amount);
-  if (amountError) {
-    errors.amount = amountError;
-  }
+	const amountError = validateExpenseAmount(expenseData.amount);
+	if (amountError) {
+		errors.amount = amountError;
+	}
 
-  const categoryError = validateExpenseCategory(expenseData.category);
-  if (categoryError) {
-    errors.category = categoryError;
-  }
+	const categoryError = validateExpenseCategory(expenseData.category);
+	if (categoryError) {
+		errors.category = categoryError;
+	}
 
-  return errors;
+	return errors;
 }
