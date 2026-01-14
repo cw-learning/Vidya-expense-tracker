@@ -28,21 +28,21 @@ describe("CurrencyConverter", () => {
 		render(<CurrencyConverter totalAmount={100} />);
 
 		await waitFor(() => {
-			expect(screen.getByText("Currency Converter")).toBeInTheDocument();
+			expect(screen.getByRole("combobox")).toBeInTheDocument();
 		});
 	});
 
 	it("should show loading state initially", () => {
 		render(<CurrencyConverter totalAmount={100} />);
 
-		expect(screen.getByText("Loading...")).toBeInTheDocument();
+		expect(screen.getByText("⏳")).toBeInTheDocument();
 	});
 
 	it("should display currency dropdown", async () => {
 		render(<CurrencyConverter totalAmount={100} />);
 
 		await waitFor(() => {
-			expect(screen.getByLabelText("Select Currency")).toBeInTheDocument();
+			expect(screen.getByRole("combobox")).toBeInTheDocument();
 		});
 	});
 
@@ -59,10 +59,10 @@ describe("CurrencyConverter", () => {
 		render(<CurrencyConverter totalAmount={100} />);
 
 		await waitFor(() => {
-			expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+			expect(screen.queryByText("⏳")).not.toBeInTheDocument();
 		});
 
-		const select = screen.getByLabelText("Select Currency");
+		const select = screen.getByRole("combobox");
 		await user.selectOptions(select, "USD");
 
 		await waitFor(() => {

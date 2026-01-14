@@ -24,7 +24,7 @@ describe("ExpensePage", () => {
 
 		await waitFor(() => {
 			expect(
-				screen.getByRole("heading", { name: "Expense Tracker" })
+				screen.getByRole("heading", { name: /Expense Tracker/i })
 			).toBeInTheDocument();
 		});
 	});

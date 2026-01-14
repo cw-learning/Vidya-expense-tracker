@@ -20,7 +20,7 @@ describe("ThemeToggle", () => {
 	it("should show dark mode button when theme is light", () => {
 		render(<ThemeToggle />);
 
-		expect(screen.getByText("Dark Mode")).toBeInTheDocument();
+		expect(screen.getByText("Dark")).toBeInTheDocument();
 		expect(screen.getByText("🌙")).toBeInTheDocument();
 	});
 
@@ -30,7 +30,7 @@ describe("ThemeToggle", () => {
 
 		render(<ThemeToggle />);
 
-		expect(screen.getByText("Light Mode")).toBeInTheDocument();
+		expect(screen.getByText("Light")).toBeInTheDocument();
 		expect(screen.getByText("☀️")).toBeInTheDocument();
 	});
 

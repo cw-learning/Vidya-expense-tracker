@@ -53,7 +53,7 @@ describe("Button", () => {
 	it("should apply primary variant styles by default", () => {
 		render(<Button>Primary</Button>);
 		const button = screen.getByRole("button");
-		expect(button.className).toContain("bg-blue-600");
+		expect(button.className).toContain("bg-teal-600");
 	});
 
 	it("should apply secondary variant styles", () => {
