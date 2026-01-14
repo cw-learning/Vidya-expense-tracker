@@ -5,6 +5,7 @@ import { TotalExpense } from '../components/TotalExpense.jsx';
 import { ThemeToggle } from '../../theme/components/ThemeToggle.jsx';
 import { useThemeStore } from '../../theme/store/useThemeStore.js';
 import { THEME_COLORS } from '../../theme/utils/theme.constants.js';
+import { CurrencyConverter } from '../components/CurrencyConverter.jsx';
 
 export function ExpensePage() {
     const [expenses, setExpenses] = useState([]);
@@ -50,6 +51,7 @@ export function ExpensePage() {
 
                     <div className="lg:col-span-2 space-y-6">
                         <TotalExpense totalAmount={totalExpenseAmount} />
+                        <CurrencyConverter totalAmount={totalExpenseAmount} />
                         <div className={`${colors.card} rounded-lg shadow-md p-6 border ${colors.border}`}>
                             <h2 className={`text-2xl font-semibold mb-4 ${colors.cardText}`}>
                                 Expenses
