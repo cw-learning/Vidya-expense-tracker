@@ -87,14 +87,18 @@ export function ExpenseForm({ onAddExpense }) {
     }
 
     const inputBaseStyles =
-        `w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${colors.card} ${colors.text} ${colors.border}`;
+        `w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${colors.input}`;
     const inputErrorStyles = 'border-red-500 focus:ring-red-500';
+    const labelStyles = `block text-sm font-semibold mb-2 ${colors.text}`;
 
     return (
-        <form onSubmit={handleSubmitForm} className="space-y-4">
-            <div>
-                <label htmlFor="expense-title" className={`block text-sm font-medium mb-1 ${colors.text}`}>
-                    Title
+        <form onSubmit={handleSubmitForm} className="space-y-5">
+            <div className="relative">
+                <label htmlFor="expense-title" className={labelStyles}>
+                    <span className="flex items-center gap-2">
+                        <span>📝</span>
+                        Title
+                    </span>
                 </label>
                 <input
                     id="expense-title"
@@ -102,14 +106,17 @@ export function ExpenseForm({ onAddExpense }) {
                     value={formData.title}
                     onChange={handleChangeTitle}
                     className={`${inputBaseStyles} ${formErrors.title ? inputErrorStyles : ''}`}
-                    placeholder="Enter expense title"
+                    placeholder="e.g., Grocery shopping"
                 />
                 <ErrorMessage message={formErrors.title} />
             </div>
 
-            <div>
-                <label htmlFor="expense-amount" className={`block text-sm font-medium mb-1 ${colors.text}`}>
-                    Amount
+            <div className="relative">
+                <label htmlFor="expense-amount" className={labelStyles}>
+                    <span className="flex items-center gap-2">
+                        <span>₹</span>
+                        Amount
+                    </span>
                 </label>
                 <input
                     id="expense-amount"
@@ -118,20 +125,23 @@ export function ExpenseForm({ onAddExpense }) {
                     value={formData.amount}
                     onChange={handleChangeAmount}
                     className={`${inputBaseStyles} ${formErrors.amount ? inputErrorStyles : ''}`}
-                    placeholder="Enter amount"
+                    placeholder="0.00"
                 />
                 <ErrorMessage message={formErrors.amount} />
             </div>
 
-            <div>
-                <label htmlFor="expense-category" className={`block text-sm font-medium mb-1 ${colors.text}`}>
-                    Category
+            <div className="relative">
+                <label htmlFor="expense-category" className={labelStyles}>
+                    <span className="flex items-center gap-2">
+                        <span>🏷️</span>
+                        Category
+                    </span>
                 </label>
                 <select
                     id="expense-category"
                     value={formData.category}
                     onChange={handleChangeCategory}
-                    className={`${inputBaseStyles} ${formErrors.category ? inputErrorStyles : ''}`}
+                    className={`${inputBaseStyles} ${formErrors.category ? inputErrorStyles : ''} cursor-pointer`}
                 >
                     <option value="">Select a category</option>
                     {Object.values(EXPENSE_CATEGORIES).map((category) => (
@@ -143,7 +153,7 @@ export function ExpenseForm({ onAddExpense }) {
                 <ErrorMessage message={formErrors.category} />
             </div>
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full mt-6">
                 Add Expense
             </Button>
         </form>
