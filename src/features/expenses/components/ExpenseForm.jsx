@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button } from '../../../shared/components/Button.jsx';
 import { ErrorMessage } from '../../../shared/components/ErrorMessage.jsx';
+import { useThemeStore } from '../../theme/store/useThemeStore.js';
+import { THEME_COLORS } from '../../theme/utils/theme.constants.js';
 import {
     EXPENSE_CATEGORIES,
     EXPENSE_CATEGORY_LABELS,
@@ -18,6 +20,8 @@ const INITIAL_FORM_STATE = {
 export function ExpenseForm({ onAddExpense }) {
     const [formData, setFormData] = useState(INITIAL_FORM_STATE);
     const [formErrors, setFormErrors] = useState({});
+    const { theme } = useThemeStore();
+    const colors = THEME_COLORS[theme];
 
     function handleChangeTitle(event) {
         setFormData((previousFormData) => ({
@@ -83,13 +87,13 @@ export function ExpenseForm({ onAddExpense }) {
     }
 
     const inputBaseStyles =
-        'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+        `w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${colors.card} ${colors.text} ${colors.border}`;
     const inputErrorStyles = 'border-red-500 focus:ring-red-500';
 
     return (
         <form onSubmit={handleSubmitForm} className="space-y-4">
             <div>
-                <label htmlFor="expense-title" className="block text-sm font-medium mb-1">
+                <label htmlFor="expense-title" className={`block text-sm font-medium mb-1 ${colors.text}`}>
                     Title
                 </label>
                 <input
@@ -104,7 +108,7 @@ export function ExpenseForm({ onAddExpense }) {
             </div>
 
             <div>
-                <label htmlFor="expense-amount" className="block text-sm font-medium mb-1">
+                <label htmlFor="expense-amount" className={`block text-sm font-medium mb-1 ${colors.text}`}>
                     Amount
                 </label>
                 <input
@@ -120,7 +124,7 @@ export function ExpenseForm({ onAddExpense }) {
             </div>
 
             <div>
-                <label htmlFor="expense-category" className="block text-sm font-medium mb-1">
+                <label htmlFor="expense-category" className={`block text-sm font-medium mb-1 ${colors.text}`}>
                     Category
                 </label>
                 <select
@@ -143,7 +147,7 @@ export function ExpenseForm({ onAddExpense }) {
                 Add Expense
             </Button>
         </form>
-    );
+    ); 
 }
 
 ExpenseForm.propTypes = {

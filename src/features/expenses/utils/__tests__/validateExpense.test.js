@@ -1,5 +1,3 @@
-// src/features/expenses/utils/__tests__/validateExpense.test.js
-
 import { describe, it, expect } from 'vitest';
 import {
   validateExpenseTitle,
