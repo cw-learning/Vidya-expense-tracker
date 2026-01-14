@@ -5,18 +5,32 @@ export const THEME_MODES = {
 
 export const THEME_COLORS = {
   [THEME_MODES.LIGHT]: {
-    background: 'bg-gray-50',
+    background: 'bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50',
     text: 'text-gray-900',
     card: 'bg-white',
     cardText: 'text-gray-800',
     border: 'border-gray-200',
+    accent: 'text-teal-600',
+    accentBg: 'bg-teal-600',
+    accentHover: 'hover:bg-teal-700',
+    input: 'bg-white border-gray-300 focus:border-teal-500 focus:ring-teal-500',
+    buttonSecondary: 'bg-gray-100 hover:bg-gray-200 text-gray-700',
+    shadow: 'shadow-xl shadow-gray-200/60',
+    cardGradient: 'bg-white',
   },
   [THEME_MODES.DARK]: {
-    background: 'bg-gray-900',
+    background: 'bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900',
     text: 'text-gray-100',
-    card: 'bg-gray-800',
+    card: 'bg-slate-800',
     cardText: 'text-gray-100',
-    border: 'border-gray-700',
+    border: 'border-slate-700',
+    accent: 'text-teal-400',
+    accentBg: 'bg-teal-600',
+    accentHover: 'hover:bg-teal-700',
+    input: 'bg-slate-700 border-slate-600 focus:border-teal-500 focus:ring-teal-500',
+    buttonSecondary: 'bg-slate-700 hover:bg-slate-600 text-gray-200',
+    shadow: 'shadow-xl shadow-black/40',
+    cardGradient: 'bg-slate-800',
   },
 };
 
