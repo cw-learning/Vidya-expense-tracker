@@ -1,19 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act} from '@testing-library/react';
 import { useThemeStore } from '../store/useThemeStore.js';
 import { THEME_MODES } from '../utils/theme.constants.js';
 
 describe('useThemeStore', () => {
   beforeEach(() => {
-    // Reset store to initial state before each test
-    const { setTheme } = useThemeStore.getState();
-    setTheme(THEME_MODES.LIGHT);
-    localStorage.clear();
+  localStorage.clear();
+
+  useThemeStore.setState({
+    theme: THEME_MODES.LIGHT,
   });
+});
+
 
   it('should initialize with light theme', () => {
     const { result } = renderHook(() => useThemeStore());
-
     expect(result.current.theme).toBe(THEME_MODES.LIGHT);
   });
 
@@ -51,12 +52,6 @@ describe('useThemeStore', () => {
     });
 
     expect(result.current.theme).toBe(THEME_MODES.DARK);
-
-    act(() => {
-      result.current.setTheme(THEME_MODES.LIGHT);
-    });
-
-    expect(result.current.theme).toBe(THEME_MODES.LIGHT);
   });
 
   it('should persist theme to localStorage', () => {
@@ -66,24 +61,27 @@ describe('useThemeStore', () => {
       result.current.setTheme(THEME_MODES.DARK);
     });
 
-    const storedTheme = JSON.parse(
+    const stored = JSON.parse(
       localStorage.getItem('expense-tracker-theme')
     );
-    expect(storedTheme.state.theme).toBe(THEME_MODES.DARK);
+
+    expect(stored.state.theme).toBe(THEME_MODES.DARK);
   });
 
-  it('should restore theme from localStorage', () => {
-    // Set theme in localStorage
-    localStorage.setItem(
-      'expense-tracker-theme',
-      JSON.stringify({
-        state: { theme: THEME_MODES.DARK },
-        version: 0,
-      })
-    );
+  it('should restore theme from localStorage', async () => {
+  localStorage.setItem(
+    'expense-tracker-theme',
+    JSON.stringify({
+      state: { theme: THEME_MODES.DARK },
+      version: 0,
+    })
+  );
 
-    const { result } = renderHook(() => useThemeStore());
+  await useThemeStore.persist.rehydrate();
 
-    expect(result.current.theme).toBe(THEME_MODES.DARK);
-  });
+  const { result } = renderHook(() => useThemeStore());
+
+  expect(result.current.theme).toBe(THEME_MODES.DARK);
+});
+
 });

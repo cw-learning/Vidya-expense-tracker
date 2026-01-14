@@ -19,11 +19,6 @@ export const useThemeStore = create(
         set(() => ({
           theme,
         })),
-
-      isDarkMode: () => {
-        const state = useThemeStore.getState();
-        return state.theme === THEME_MODES.DARK;
-      },
     }),
     {
       name: THEME_STORAGE_KEY,
