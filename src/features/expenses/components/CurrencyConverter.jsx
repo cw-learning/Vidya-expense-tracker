@@ -22,11 +22,14 @@ export function CurrencyConverter({ totalAmount }) {
 
     if (error) {
         return (
-            <div className={`border-2 rounded-lg p-6 ${colors.card} ${colors.border}`}>
-                <p className="text-red-600 text-sm">
-                    Failed to load exchange rates. Showing amount in INR.
-                </p>
-                <p className={`text-2xl font-bold mt-2 ${colors.text}`}>
+            <div className={`border-2 rounded-2xl p-8 ${colors.card} ${colors.border} ${colors.shadow} bg-gradient-to-br from-red-500/10 to-orange-500/10`}>
+                <div className="flex items-center gap-3 mb-3">
+                    <span className="text-3xl">⚠️</span>
+                    <p className="text-red-600 text-sm font-semibold">
+                        Failed to load exchange rates
+                    </p>
+                </div>
+                <p className={`text-3xl font-bold ${colors.accent}`}>
                     ₹{totalAmount.toFixed(2)}
                 </p>
             </div>
@@ -34,30 +37,16 @@ export function CurrencyConverter({ totalAmount }) {
     }
 
     return (
-        <div className={`border-2 rounded-lg p-6 ${colors.card} ${colors.border}`}>
-            <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-lg font-semibold ${colors.cardText}`}>
-                    Currency Converter
-                </h3>
-                {isLoading && (
-                    <span className={`text-sm ${colors.text} opacity-70`}>Loading...</span>
-                )}
-            </div>
-
-            <div className="space-y-4">
-                <div>
-                    <label
-                        htmlFor="currency-select"
-                        className={`block text-sm font-medium mb-2 ${colors.text}`}
-                    >
-                        Select Currency
-                    </label>
+        <div className={`border-2 rounded-xl p-2.5 ${colors.cardGradient} ${colors.border} ${colors.shadow} transform transition-all duration-300 hover:scale-[1.01] hover:shadow-teal-300/50 hover:border-teal-300 relative overflow-hidden`}>
+            <div className="flex items-center justify-between gap-4 relative z-10">
+                <div className="flex items-center gap-3">
+                    <span className="text-2xl">💱</span>
                     <select
                         id="currency-select"
                         value={selectedCurrency}
                         onChange={(e) => handleChangeCurrency(e.target.value)}
                         disabled={isLoading}
-                        className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${colors.card} ${colors.text} ${colors.border} disabled:opacity-50`}
+                        className={`px-3 py-1.5 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 cursor-pointer ${colors.input} disabled:opacity-50 font-semibold text-sm`}
                     >
                         {Object.values(SUPPORTED_CURRENCIES).map((currency) => (
                             <option key={currency} value={currency}>
@@ -66,15 +55,14 @@ export function CurrencyConverter({ totalAmount }) {
                         ))}
                     </select>
                 </div>
-
-                <div className={`p-4 rounded-lg ${colors.background}`}>
-                    <p className={`text-sm ${colors.text} opacity-70 mb-1`}>
-                        Converted Amount
-                    </p>
-                    <p className={`text-3xl font-bold ${colors.text}`}>
-                        {CURRENCY_SYMBOLS[selectedCurrency]}
-                        {convertedAmount.toFixed(2)}
-                    </p>
+                <div className="flex items-center gap-2">
+                    {isLoading && <span className="animate-spin text-sm">⏳</span>}
+                    <div className="text-right">
+                        <p className="text-xs font-bold uppercase tracking-wide opacity-70">Converted</p>
+                        <p className={`text-xl font-black ${colors.accent}`}>
+                            {CURRENCY_SYMBOLS[selectedCurrency]}{convertedAmount.toFixed(2)}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
