@@ -9,16 +9,20 @@ export function ExpenseList({ expenses, onDeleteExpense }) {
 
     if (expenses.length === 0) {
         return (
-            <div className="text-center py-12">
-                <p className={`text-lg ${colors.text} opacity-60`}>
-                    No expenses yet. Add your first expense!
+            <div className="text-center py-16">
+                <div className="text-5xl mb-4">📊</div>
+                <p className={`text-lg font-semibold ${colors.text} mb-2`}>
+                    No expenses yet
+                </p>
+                <p className={`text-sm ${colors.text} opacity-60`}>
+                    Start tracking by adding your first expense!
                 </p>
             </div>
         );
     }
 
     return (
-        <ul className="space-y-3">
+        <ul className="space-y-4">
             {expenses.map((expense) => (
                 <ExpenseItem
                     key={expense.id}
