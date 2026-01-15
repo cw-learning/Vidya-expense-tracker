@@ -21,12 +21,29 @@ export const EXPENSE_CATEGORY_LABELS = {
 };
 
 // Create a new expense object with a unique id, trimmed title, numeric amount, category, and creation timestamp
-export function createExpense(title, amount, category) {
-  return {
-    id: crypto.randomUUID(),
-    title: title.trim(),
-    amount: Number(amount),
-    category,
-    createdAt: new Date().toISOString(),
-  };
-}
+function generateExpenseId() {  
+  return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;  
+}  
+
+export function createExpense(title, amount, category) {  
+  if (typeof title !== 'string') {  
+    throw new TypeError('title must be a string');  
+  }  
+
+  const numericAmount = Number(amount);  
+  if (Number.isNaN(numericAmount)) {  
+    throw new TypeError('amount must be a valid number');  
+  }  
+
+  return {  
+    id: generateExpenseId(),  
+    title: title.trim(),  
+    amount: numericAmount,  
+    category,  
+    createdAt: new Date().toISOString(),  
+  };  
+}  
+
+
+
+

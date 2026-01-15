@@ -55,22 +55,18 @@ export function validateExpenseCategory(category) {
 }
 
 export function validateExpense(expenseData) {
+  const expense = expenseData && typeof expenseData === 'object' ? expenseData : {};
+
   const errors = {};
 
-  const titleError = validateExpenseTitle(expenseData.title);
-  if (titleError) {
-    errors.title = titleError;
-  }
+  const titleError = validateExpenseTitle(expense.title);
+  if (titleError) errors.title = titleError;
 
-  const amountError = validateExpenseAmount(expenseData.amount);
-  if (amountError) {
-    errors.amount = amountError;
-  }
+  const amountError = validateExpenseAmount(expense.amount);
+  if (amountError) errors.amount = amountError;
 
-  const categoryError = validateExpenseCategory(expenseData.category);
-  if (categoryError) {
-    errors.category = categoryError;
-  }
+  const categoryError = validateExpenseCategory(expense.category);
+  if (categoryError) errors.category = categoryError;
 
   return errors;
 }

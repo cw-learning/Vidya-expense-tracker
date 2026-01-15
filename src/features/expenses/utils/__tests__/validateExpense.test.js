@@ -1,5 +1,3 @@
-// src/features/expenses/utils/__tests__/validateExpense.test.js
-
 import { describe, it, expect } from 'vitest';
 import {
   validateExpenseTitle,
@@ -125,4 +123,22 @@ describe('validateExpense', () => {
     expect(errors.amount).toBe('amount must be greater than zero');
     expect(errors.category).toBeUndefined();
   });
+
+    it('should return required-field errors when expense is null', () => {
+    expect(validateExpense(null)).toEqual({
+      title: 'title is required',
+      amount: 'amount is required',
+      category: 'category is required',
+    });
+  });
+
+  it('should return required-field errors when expense is undefined', () => {
+    expect(validateExpense(undefined)).toEqual({
+      title: 'title is required',
+      amount: 'amount is required',
+      category: 'category is required',
+    });
+  });
+
+
 });
