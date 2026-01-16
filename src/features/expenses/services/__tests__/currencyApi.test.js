@@ -88,6 +88,22 @@ describe("currencyApi", () => {
 			expect(result).toBeCloseTo(1.1, 2);
 		});
 
+		it("should convert INR to USD when rates omit INR", () => {
+			const ratesWithoutINR = {
+				USD: 0.012,
+				EUR: 0.011,
+			};
+
+			const result = convertCurrency(
+				100,
+				SUPPORTED_CURRENCIES.INR,
+				SUPPORTED_CURRENCIES.USD,
+				ratesWithoutINR
+			);
+
+			expect(result).toBeCloseTo(1.2, 2);
+		});
+
 		it("should return same amount when currencies are same", () => {
 			const result = convertCurrency(
 				100,

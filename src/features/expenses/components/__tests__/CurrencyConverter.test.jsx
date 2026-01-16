@@ -64,7 +64,7 @@ describe("CurrencyConverter", () => {
 			expect(screen.queryByRole("status")).not.toBeInTheDocument();
 		});
 
-		const select = screen.getByRole("combobox");
+		const select = screen.getByLabelText(/select currency/i);
 		await user.selectOptions(select, "USD");
 
 		await waitFor(() => {

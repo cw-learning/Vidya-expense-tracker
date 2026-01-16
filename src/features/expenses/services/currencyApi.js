@@ -41,8 +41,10 @@ export function convertCurrency(amount, fromCurrency, toCurrency, rates) {
 		return amount;
 	}
 
-	const rateFrom = rates?.[fromCurrency];
-	const rateToTarget = rates?.[toCurrency];
+	const rateFrom =
+		rates?.[fromCurrency] ?? (fromCurrency === "INR" ? 1 : undefined);
+	const rateToTarget =
+		rates?.[toCurrency] ?? (toCurrency === "INR" ? 1 : undefined);
 
 	if (typeof rateFrom !== "number" || typeof rateToTarget !== "number") {
 		return amount; // fallback to avoid NaN; caller can treat as “no conversion available”
