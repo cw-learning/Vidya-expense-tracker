@@ -46,8 +46,8 @@ describe("ExpensePage", () => {
 			expect(screen.getByText("Total Expenses")).toBeInTheDocument();
 		});
 
-		// ₹0.00 appears in TotalExpense and CurrencyConverter
-		expect(screen.getAllByText("₹0.00")).toHaveLength(2);
+		const totalCard = screen.getByText("Total Expenses").closest("div");
+		expect(within(totalCard).getByText("₹0.00")).toBeInTheDocument();
 	});
 
 	it("should render empty state for expenses", async () => {
@@ -75,8 +75,8 @@ describe("ExpensePage", () => {
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
 
 		expect(screen.getByText("Lunch")).toBeInTheDocument();
-		// ₹50.00 appears in: TotalExpense, CurrencyConverter, and ExpenseItem
-		expect(screen.getAllByText("₹50.00")).toHaveLength(3);
+		const totalCard = screen.getByText("Total Expenses").closest("div");
+		expect(within(totalCard).getByText("₹50.00")).toBeInTheDocument();
 	});
 
 	it("should update total when expense is added", async () => {

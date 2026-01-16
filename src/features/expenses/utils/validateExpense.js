@@ -55,9 +55,18 @@ export function validateExpenseCategory(category) {
 }
 
 export function validateExpense(expenseData) {
+	if (!expenseData || typeof expenseData !== "object") {
+		return {
+			title: "title is required",
+			amount: "amount is required",
+			category: "category is required",
+		};
+	}
+
 	const errors = {};
 
 	const titleError = validateExpenseTitle(expenseData.title);
+
 	if (titleError) {
 		errors.title = titleError;
 	}

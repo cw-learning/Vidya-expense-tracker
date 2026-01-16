@@ -41,8 +41,14 @@ export function convertCurrency(amount, fromCurrency, toCurrency, rates) {
 		return amount;
 	}
 
-	const rateToTarget = rates[toCurrency];
-	const convertedAmount = amount * rateToTarget;
+	const rateFrom = rates?.[fromCurrency];
+	const rateToTarget = rates?.[toCurrency];
+
+	if (typeof rateFrom !== "number" || typeof rateToTarget !== "number") {
+		return amount; // fallback to avoid NaN; caller can treat as “no conversion available”
+	}
+
+	const convertedAmount = amount * (rateToTarget / rateFrom);
 
 	return Number(convertedAmount.toFixed(2));
 }

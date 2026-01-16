@@ -26,8 +26,9 @@ export function useCurrencyConversion(baseAmount) {
 				const rates = await fetchExchangeRates("INR", abortController.signal);
 				setExchangeRates(rates);
 			} catch (err) {
-				if (err.message !== "Request cancelled") {
-					setError(err.message);
+				const message = err instanceof Error ? err.message : "Unknown error";
+				if (message !== "Request cancelled") {
+					setError(message);
 				}
 			} finally {
 				setIsLoading(false);

@@ -45,6 +45,9 @@ export function CurrencyConverter({ totalAmount }) {
 			<div className="flex items-center justify-between gap-4 relative z-10">
 				<div className="flex items-center gap-3">
 					<span className="text-2xl">💱</span>
+					<label htmlFor="currency-select" className="sr-only">
+						Select currency
+					</label>
 					<select
 						id="currency-select"
 						value={selectedCurrency}
@@ -60,7 +63,18 @@ export function CurrencyConverter({ totalAmount }) {
 					</select>
 				</div>
 				<div className="flex items-center gap-2">
-					{isLoading && <span className="animate-spin text-sm">⏳</span>}
+					{isLoading && (
+						<output
+							aria-live="polite"
+							className="flex items-center gap-1 text-sm"
+						>
+							<span className="sr-only">Loading exchange rates</span>
+							<span aria-hidden="true" className="animate-spin">
+								⏳
+							</span>
+						</output>
+					)}
+
 					<div className="text-right">
 						<p className="text-xs font-bold uppercase tracking-wide opacity-70">
 							Converted

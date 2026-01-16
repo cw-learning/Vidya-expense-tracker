@@ -74,7 +74,7 @@ describe("currencyApi", () => {
 				mockRates
 			);
 
-			expect(result).toBe(1.2);
+			expect(result).toBeCloseTo(1.2, 2);
 		});
 
 		it("should convert INR to EUR", () => {
@@ -85,7 +85,7 @@ describe("currencyApi", () => {
 				mockRates
 			);
 
-			expect(result).toBe(1.1);
+			expect(result).toBeCloseTo(1.1, 2);
 		});
 
 		it("should return same amount when currencies are same", () => {

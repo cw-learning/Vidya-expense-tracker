@@ -19,12 +19,14 @@ export function Button({
 			"bg-red-600 text-white hover:bg-red-700 active:bg-red-800 shadow-red-200",
 	};
 
+	const selectedVariantStyles = variantStyles[variant] ?? variantStyles.primary;
+
 	return (
 		<button
 			type={type}
 			onClick={onClick}
 			disabled={disabled}
-			className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+			className={`${baseStyles} ${selectedVariantStyles} ${className}`}
 		>
 			{children}
 		</button>

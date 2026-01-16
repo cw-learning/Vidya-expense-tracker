@@ -35,13 +35,12 @@ describe("ExpenseList", () => {
 		expect(screen.getByText("Bus Ticket")).toBeInTheDocument();
 	});
 
-	it("should render expenses with unique keys", () => {
+	it("should render one list item per expense", () => {
 		const { container } = render(
 			<ExpenseList expenses={mockExpenses} onDeleteExpense={vi.fn()} />
 		);
 
-		const listItems = container.querySelectorAll("li");
-		expect(listItems).toHaveLength(2);
+		expect(container.querySelectorAll("li")).toHaveLength(mockExpenses.length);
 	});
 
 	it("should call onDeleteExpense when delete button is clicked", async () => {

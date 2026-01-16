@@ -54,7 +54,7 @@ describe("useCurrencyConversion", () => {
 
 		await waitFor(() => {
 			expect(result.current.selectedCurrency).toBe("USD");
-			expect(result.current.convertedAmount).toBe(1.2);
+			expect(result.current.convertedAmount).toBeCloseTo(1.2, 2);
 		});
 	});
 

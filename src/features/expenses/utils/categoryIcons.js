@@ -7,6 +7,7 @@ export const CATEGORY_ICONS = {
 	[EXPENSE_CATEGORIES.UTILITIES]: "⚡",
 	[EXPENSE_CATEGORIES.HEALTHCARE]: "🏥",
 	[EXPENSE_CATEGORIES.OTHER]: "📌",
+	[EXPENSE_CATEGORIES.SHOPPING]: "🛍️",
 };
 
 export const CATEGORY_COLORS = {
@@ -20,6 +21,8 @@ export const CATEGORY_COLORS = {
 		"bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400",
 	[EXPENSE_CATEGORIES.HEALTHCARE]:
 		"bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400",
+	[EXPENSE_CATEGORIES.SHOPPING]:
+		"bg-pink-100 text-pink-600 dark:bg-pink-900/30 dark:text-pink-400",
 	[EXPENSE_CATEGORIES.OTHER]:
 		"bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400",
 };
