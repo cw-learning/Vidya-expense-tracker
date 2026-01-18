@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
+import { useThemeStore } from "../../theme/store/useThemeStore.js";
+import { THEME_COLORS } from "../../theme/utils/theme.constants.js";
 
 export function TotalExpense({ totalAmount }) {
+	const { theme } = useThemeStore();
+	const colors = THEME_COLORS[theme];
 	return (
-		<div className="border-2 rounded-xl p-2.5 border-transparent shadow-xl transform transition-all duration-300 hover:scale-[1.01] bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 relative overflow-hidden">
+		<div
+			className={`border-2 rounded-xl p-2.5 border-transparent shadow-xl transform transition-all duration-300 hover:scale-[1.01] ${colors.totalCard} relative overflow-hidden`}
+		>
 			<div className="flex items-center justify-between relative z-10">
 				<div className="flex items-center gap-3">
 					<span className="text-2xl">💰</span>

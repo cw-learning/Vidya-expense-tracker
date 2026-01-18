@@ -56,7 +56,7 @@ export function ExpensePage() {
 				<div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
 					<div className="lg:col-span-2">
 						<div
-							className={`${colors.cardGradient} rounded-3xl ${colors.shadow} p-6 border-2 ${colors.border} transform transition-all duration-300 hover:scale-[1.02] hover:shadow-purple-300/50 hover:border-purple-300`}
+							className={`${colors.cardGradient} rounded-3xl ${colors.shadow} p-6 border-2 ${colors.border} transform transition-all duration-300 hover:scale-[1.02] hover:shadow-teal-300/50 hover:border-teal-300`}
 						>
 							<h2
 								className={`text-xl font-bold mb-6 ${colors.accent} flex items-center gap-2`}
@@ -70,7 +70,7 @@ export function ExpensePage() {
 
 					<div className="lg:col-span-3">
 						<div
-							className={`${colors.cardGradient} rounded-3xl ${colors.shadow} p-6 border-2 ${colors.border} transform transition-all duration-300 hover:scale-[1.01] hover:shadow-purple-300/50 hover:border-purple-300`}
+							className={`${colors.cardGradient} rounded-3xl ${colors.shadow} p-6 border-2 ${colors.border} transform transition-all duration-300 hover:scale-[1.01] hover:shadow-teal-300/50 hover:border-teal-300`}
 						>
 							<h2
 								className={`text-xl font-bold mb-6 ${colors.accent} flex items-center gap-2`}

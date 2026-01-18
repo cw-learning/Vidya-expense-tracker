@@ -27,10 +27,18 @@ export const CATEGORY_COLORS = {
 		"bg-gray-100 text-gray-600 dark:bg-gray-900/30 dark:text-gray-400",
 };
 
+/**
+ * @param {string} category - One of EXPENSE_CATEGORIES.
+ * @returns {string} Emoji representing the category.
+ */
 export function getCategoryIcon(category) {
 	return CATEGORY_ICONS[category] || CATEGORY_ICONS[EXPENSE_CATEGORIES.OTHER];
 }
 
+/**
+ * @param {string} category - One of EXPENSE_CATEGORIES.
+ * @returns {string} Tailwind class string for background/text colors.
+ */
 export function getCategoryColor(category) {
 	return CATEGORY_COLORS[category] || CATEGORY_COLORS[EXPENSE_CATEGORIES.OTHER];
 }

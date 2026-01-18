@@ -17,6 +17,8 @@ export const THEME_COLORS = {
 		buttonSecondary: "bg-gray-100 hover:bg-gray-200 text-gray-700",
 		shadow: "shadow-xl shadow-gray-200/60",
 		cardGradient: "bg-white",
+		totalCard:
+			"bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700",
 	},
 	[THEME_MODES.DARK]: {
 		background: "bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900",
@@ -32,6 +34,8 @@ export const THEME_COLORS = {
 		buttonSecondary: "bg-slate-700 hover:bg-slate-600 text-gray-200",
 		shadow: "shadow-xl shadow-black/40",
 		cardGradient: "bg-slate-800",
+		totalCard:
+			"bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700",
 	},
 };
 

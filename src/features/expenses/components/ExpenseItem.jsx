@@ -2,7 +2,10 @@ import PropTypes from "prop-types";
 import { Button } from "../../../shared/components/Button.jsx";
 import { useThemeStore } from "../../theme/store/useThemeStore.js";
 import { THEME_COLORS } from "../../theme/utils/theme.constants.js";
-import { EXPENSE_CATEGORY_LABELS } from "../models/expense.model.js";
+import {
+	EXPENSE_CATEGORIES,
+	EXPENSE_CATEGORY_LABELS,
+} from "../models/expense.model.js";
 import { getCategoryColor, getCategoryIcon } from "../utils/categoryIcons.js";
 
 export function ExpenseItem({ expense, onDeleteExpense }) {
@@ -10,6 +13,9 @@ export function ExpenseItem({ expense, onDeleteExpense }) {
 	const colors = THEME_COLORS[theme];
 	const categoryIcon = getCategoryIcon(expense.category);
 	const categoryColor = getCategoryColor(expense.category);
+	const categoryLabel =
+		EXPENSE_CATEGORY_LABELS[expense.category] ??
+		EXPENSE_CATEGORY_LABELS[EXPENSE_CATEGORIES.OTHER];
 
 	function handleClickDelete() {
 		onDeleteExpense(expense.id);
@@ -22,6 +28,7 @@ export function ExpenseItem({ expense, onDeleteExpense }) {
 			<div className="flex items-center gap-3 flex-1">
 				<div
 					className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${categoryColor}`}
+					aria-hidden="true"
 				>
 					{categoryIcon}
 				</div>
@@ -30,7 +37,7 @@ export function ExpenseItem({ expense, onDeleteExpense }) {
 						{expense.title}
 					</h3>
 					<p className={`text-xs mt-0.5 ${colors.text} opacity-60 font-medium`}>
-						{EXPENSE_CATEGORY_LABELS[expense.category]}
+						{categoryLabel}
 					</p>
 				</div>
 			</div>

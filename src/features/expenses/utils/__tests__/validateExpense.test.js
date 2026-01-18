@@ -98,6 +98,14 @@ describe("validateExpense", () => {
 		expect(validateExpense(validExpense)).toEqual({});
 	});
 
+	it("should return required-field errors when expenseData is missing", () => {
+		expect(validateExpense(null)).toEqual({
+			title: "title is required",
+			amount: "amount is required",
+			category: "category is required",
+		});
+	});
+
 	it("should return all errors for invalid expense", () => {
 		const invalidExpense = {
 			title: "",

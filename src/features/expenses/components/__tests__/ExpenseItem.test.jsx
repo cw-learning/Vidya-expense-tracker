@@ -14,11 +14,16 @@ describe("ExpenseItem", () => {
 	};
 
 	it("should render expense details", () => {
-		render(<ExpenseItem expense={mockExpense} onDeleteExpense={vi.fn()} />);
+		const { container } = render(
+			<ExpenseItem expense={mockExpense} onDeleteExpense={vi.fn()} />
+		);
 
 		expect(screen.getByText("Lunch")).toBeInTheDocument();
 		expect(screen.getByText("Food")).toBeInTheDocument();
 		expect(screen.getByText("₹50.00")).toBeInTheDocument();
+
+		// Icon should be present (rendered inside an element marked aria-hidden)
+		expect(container.querySelector('[aria-hidden="true"]')).toBeInTheDocument();
 	});
 
 	it("should render delete button", () => {

@@ -87,7 +87,8 @@ export function ExpenseForm({ onAddExpense }) {
 	}
 
 	const inputBaseStyles = `w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${colors.input}`;
-	const inputErrorStyles = "border-red-500 focus:ring-red-500";
+	const inputErrorStyles =
+		"border-red-500 focus:ring-red-500 focus:border-red-500";
 	const labelStyles = `block text-sm font-semibold mb-2 ${colors.text}`;
 
 	return (

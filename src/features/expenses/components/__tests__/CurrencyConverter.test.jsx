@@ -24,6 +24,14 @@ describe("CurrencyConverter", () => {
 		currencyApi.fetchExchangeRates.mockResolvedValue(mockRates);
 	});
 
+	it("has a label-accessible currency select", async () => {
+		render(<CurrencyConverter totalAmount={100} />);
+
+		await waitFor(() => {
+			expect(screen.getByLabelText(/select currency/i)).toBeInTheDocument();
+		});
+	});
+
 	it("should render currency converter", async () => {
 		render(<CurrencyConverter totalAmount={100} />);
 
