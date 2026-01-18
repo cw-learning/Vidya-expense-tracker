@@ -1,30 +1,31 @@
-import { useThemeStore } from '../store/useThemeStore.js';
-import { THEME_MODES } from '../utils/theme.constants.js';
+import { useThemeStore } from "../store/useThemeStore.js";
+import { THEME_COLORS, THEME_MODES } from "../utils/theme.constants.js";
 
 export function ThemeToggle() {
-    const { theme, toggleTheme } = useThemeStore();
-    const isDarkMode = theme === THEME_MODES.DARK;
+	const { theme, toggleTheme } = useThemeStore();
+	const isDarkMode = theme === THEME_MODES.DARK;
+	const colors = THEME_COLORS[theme];
 
-    return (
-        <button
-            onClick={toggleTheme}
-            className="px-4 py-2 rounded-lg border-2 transition-colors duration-200 hover:opacity-80"
-            aria-label={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
-            type="button"
-        >
-            <span className="flex items-center gap-2">
-                {isDarkMode ? (
-                    <>
-                        <span className="text-2xl">☀️</span>
-                        <span className="font-medium">Light Mode</span>
-                    </>
-                ) : (
-                    <>
-                        <span className="text-2xl">🌙</span>
-                        <span className="font-medium">Dark Mode</span>
-                    </>
-                )}
-            </span>
-        </button>
-    );
+	return (
+		<button
+			onClick={toggleTheme}
+			className={`px-6 py-3 rounded-xl border-2 transition-all duration-300 hover:scale-105 active:scale-95 ${colors.card} ${colors.border} ${colors.shadow} focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent`}
+			aria-label={`Switch to ${isDarkMode ? "light" : "dark"} mode`}
+			type="button"
+		>
+			<span className="flex items-center gap-3">
+				{isDarkMode ? (
+					<>
+						<span className="text-2xl">☀️</span>
+						<span className={`font-bold ${colors.accent}`}>Light</span>
+					</>
+				) : (
+					<>
+						<span className="text-2xl">🌙</span>
+						<span className={`font-bold ${colors.accent}`}>Dark</span>
+					</>
+				)}
+			</span>
+		</button>
+	);
 }
