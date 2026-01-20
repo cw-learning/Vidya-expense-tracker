@@ -5,3 +5,7 @@ body,
 #root {
 	height: 100%;
 }
+
+.highlight-high-amount {
+	@apply bg-yellow-100 dark:bg-yellow-900/30;
+}

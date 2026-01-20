@@ -11,6 +11,8 @@ describe("ExpenseForm", () => {
 		expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/type/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/notes/i)).toBeInTheDocument();
 		expect(
 			screen.getByRole("button", { name: /add expense/i })
 		).toBeInTheDocument();
@@ -44,6 +46,26 @@ describe("ExpenseForm", () => {
 		await user.selectOptions(categorySelect, EXPENSE_CATEGORIES.FOOD);
 
 		expect(categorySelect).toHaveValue(EXPENSE_CATEGORIES.FOOD);
+	});
+
+	it("should update type select on change", async () => {
+		const user = userEvent.setup();
+		render(<ExpenseForm onAddExpense={vi.fn()} />);
+
+		const typeSelect = screen.getByLabelText(/type/i);
+		await user.selectOptions(typeSelect, "income");
+
+		expect(typeSelect).toHaveValue("income");
+	});
+
+	it("should update notes input on change", async () => {
+		const user = userEvent.setup();
+		render(<ExpenseForm onAddExpense={vi.fn()} />);
+
+		const notesInput = screen.getByLabelText(/notes/i);
+		await user.type(notesInput, "Some notes");
+
+		expect(notesInput).toHaveValue("Some notes");
 	});
 
 	it("should show validation errors for empty form submission", async () => {
@@ -93,6 +115,8 @@ describe("ExpenseForm", () => {
 			screen.getByLabelText(/category/i),
 			EXPENSE_CATEGORIES.FOOD
 		);
+		await user.selectOptions(screen.getByLabelText(/type/i), "expense");
+		await user.type(screen.getByLabelText(/notes/i), "Optional notes");
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
 
 		expect(handleAddExpense).toHaveBeenCalledTimes(1);
@@ -101,6 +125,8 @@ describe("ExpenseForm", () => {
 			title: "Lunch",
 			amount: 50,
 			category: EXPENSE_CATEGORIES.FOOD,
+			type: "expense",
+			notes: "Optional notes",
 		});
 		expect(expense.id).toBeDefined();
 		expect(expense.createdAt).toBeDefined();

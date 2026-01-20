@@ -8,6 +8,8 @@ import {
 	createExpense,
 	EXPENSE_CATEGORIES,
 	EXPENSE_CATEGORY_LABELS,
+	EXPENSE_TYPE_LABELS,
+	EXPENSE_TYPES,
 } from "../models/expense.model.js";
 import { validateExpense } from "../utils/validateExpense.js";
 
@@ -15,6 +17,8 @@ const INITIAL_FORM_STATE = {
 	title: "",
 	amount: "",
 	category: "",
+	type: EXPENSE_TYPES.EXPENSE,
+	notes: "",
 };
 
 export function ExpenseForm({ onAddExpense }) {
@@ -65,6 +69,34 @@ export function ExpenseForm({ onAddExpense }) {
 		}
 	}
 
+	function handleChangeType(event) {
+		setFormData((previousFormData) => ({
+			...previousFormData,
+			type: event.target.value,
+		}));
+
+		if (formErrors.type) {
+			setFormErrors((previousErrors) => ({
+				...previousErrors,
+				type: null,
+			}));
+		}
+	}
+
+	function handleChangeNotes(event) {
+		setFormData((previousFormData) => ({
+			...previousFormData,
+			notes: event.target.value,
+		}));
+
+		if (formErrors.notes) {
+			setFormErrors((previousErrors) => ({
+				...previousErrors,
+				notes: null,
+			}));
+		}
+	}
+
 	function handleSubmitForm(event) {
 		event.preventDefault();
 
@@ -78,7 +110,9 @@ export function ExpenseForm({ onAddExpense }) {
 		const newExpense = createExpense(
 			formData.title,
 			formData.amount,
-			formData.category
+			formData.category,
+			formData.type,
+			formData.notes
 		);
 
 		onAddExpense(newExpense);
@@ -151,6 +185,46 @@ export function ExpenseForm({ onAddExpense }) {
 					))}
 				</select>
 				<ErrorMessage message={formErrors.category} />
+			</div>
+
+			<div className="relative">
+				<label htmlFor="expense-type" className={labelStyles}>
+					<span className="flex items-center gap-2">
+						<span>💰</span>
+						Type
+					</span>
+				</label>
+				<select
+					id="expense-type"
+					value={formData.type}
+					onChange={handleChangeType}
+					className={`${inputBaseStyles} ${formErrors.type ? inputErrorStyles : ""} cursor-pointer`}
+				>
+					<option value="">Select type</option>
+					{Object.values(EXPENSE_TYPES).map((type) => (
+						<option key={type} value={type}>
+							{EXPENSE_TYPE_LABELS[type]}
+						</option>
+					))}
+				</select>
+				<ErrorMessage message={formErrors.type} />
+			</div>
+
+			<div className="relative">
+				<label htmlFor="expense-notes" className={labelStyles}>
+					<span className="flex items-center gap-2">
+						<span>📝</span>
+						Notes (Optional)
+					</span>
+				</label>
+				<input
+					id="expense-notes"
+					type="text"
+					value={formData.notes}
+					onChange={handleChangeNotes}
+					className={inputBaseStyles}
+					placeholder="e.g., Weekly groceries"
+				/>
 			</div>
 
 			<Button type="submit" className="w-full mt-6">
