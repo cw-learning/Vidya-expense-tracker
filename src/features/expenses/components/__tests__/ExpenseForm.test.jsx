@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { EXPENSE_CATEGORIES } from "../../models/expense.model.js";
+import {
+	EXPENSE_CATEGORIES,
+	EXPENSE_TYPES,
+} from "../../models/expense.model.js";
 import { ExpenseForm } from "../ExpenseForm.jsx";
 
 describe("ExpenseForm", () => {
@@ -53,9 +56,9 @@ describe("ExpenseForm", () => {
 		render(<ExpenseForm onAddExpense={vi.fn()} />);
 
 		const typeSelect = screen.getByLabelText(/type/i);
-		await user.selectOptions(typeSelect, "income");
+		await user.selectOptions(typeSelect, EXPENSE_TYPES.INCOME);
 
-		expect(typeSelect).toHaveValue("income");
+		expect(typeSelect).toHaveValue(EXPENSE_TYPES.INCOME);
 	});
 
 	it("should update notes input on change", async () => {
@@ -115,7 +118,10 @@ describe("ExpenseForm", () => {
 			screen.getByLabelText(/category/i),
 			EXPENSE_CATEGORIES.FOOD
 		);
-		await user.selectOptions(screen.getByLabelText(/type/i), "expense");
+		await user.selectOptions(
+			screen.getByLabelText(/type/i),
+			EXPENSE_TYPES.EXPENSE
+		);
 		await user.type(screen.getByLabelText(/notes/i), "Optional notes");
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
 
@@ -125,7 +131,7 @@ describe("ExpenseForm", () => {
 			title: "Lunch",
 			amount: 50,
 			category: EXPENSE_CATEGORIES.FOOD,
-			type: "expense",
+			type: EXPENSE_TYPES.EXPENSE,
 			notes: "Optional notes",
 		});
 		expect(expense.id).toBeDefined();

@@ -8,8 +8,21 @@ import {
 import { ExpenseGrid } from "../ExpenseGrid.jsx";
 
 vi.mock("ag-grid-react", () => ({
-	AgGridReact: ({ rowData, columnDefs, context }) => (
+	AgGridReact: ({ rowData, columnDefs, context, onCellValueChanged }) => (
 		<div data-testid="ag-grid">
+			<button
+				type="button"
+				onClick={() =>
+					onCellValueChanged?.({
+						data: rowData[0],
+						colDef: { field: "amount" },
+						newValue: "123.45",
+					})
+				}
+			>
+				trigger-edit
+			</button>
+
 			{rowData.map((row, index) => (
 				<div key={row.id} data-testid={`grid-row-${index}`}>
 					{columnDefs.map((col) => {
@@ -23,12 +36,15 @@ vi.mock("ag-grid-react", () => ({
 								</div>
 							);
 						}
-						const value = col.valueFormatter
-							? col.valueFormatter({ value: row[col.field] })
+						const value = col.valueGetter
+							? col.valueGetter({ data: row })
 							: row[col.field];
+						const formattedValue = col.valueFormatter
+							? col.valueFormatter({ value })
+							: value;
 						return (
 							<div key={col.field} data-testid={`cell-${col.field}-${index}`}>
-								{value}
+								{formattedValue}
 							</div>
 						);
 					})}
@@ -70,7 +86,7 @@ describe("ExpenseGrid", () => {
 			category: EXPENSE_CATEGORIES.FOOD,
 			type: EXPENSE_TYPES.EXPENSE,
 			notes: "Team lunch",
-			createdAt: new Date("2023-01-01"),
+			createdAt: new Date("2023-01-01T12:00:00.000Z"),
 		},
 		{
 			id: "2",
@@ -79,7 +95,7 @@ describe("ExpenseGrid", () => {
 			category: EXPENSE_CATEGORIES.TRANSPORT,
 			type: EXPENSE_TYPES.INCOME,
 			notes: "Reimbursement",
-			createdAt: new Date("2023-01-02"),
+			createdAt: new Date("2023-01-02T12:00:00.000Z"),
 		},
 	];
 
@@ -99,7 +115,7 @@ describe("ExpenseGrid", () => {
 		expect(screen.getAllByTestId(/^grid-row-/)).toHaveLength(2);
 	});
 
-	it("should display expense data correctly", () => {
+	it("should display expense data correctly (timezone-safe date assertion)", () => {
 		render(
 			<ExpenseGrid
 				expenses={mockExpenses}
@@ -109,7 +125,7 @@ describe("ExpenseGrid", () => {
 		);
 
 		expect(screen.getByTestId("cell-createdAt-0")).toHaveTextContent(
-			"1/1/2023"
+			new Date(mockExpenses[0].createdAt).toLocaleDateString()
 		);
 		expect(screen.getByTestId("cell-title-0")).toHaveTextContent("Lunch");
 		expect(screen.getByTestId("cell-category-0")).toHaveTextContent("Food");
@@ -118,7 +134,7 @@ describe("ExpenseGrid", () => {
 		expect(screen.getByTestId("cell-notes-0")).toHaveTextContent("Team lunch");
 
 		expect(screen.getByTestId("cell-createdAt-1")).toHaveTextContent(
-			"1/2/2023"
+			new Date(mockExpenses[1].createdAt).toLocaleDateString()
 		);
 		expect(screen.getByTestId("cell-title-1")).toHaveTextContent("Transport");
 		expect(screen.getByTestId("cell-amount-1")).toHaveTextContent("₹500.00");
@@ -167,6 +183,23 @@ describe("ExpenseGrid", () => {
 		await user.click(deleteButtons[0]);
 
 		expect(mockOnDeleteExpense).toHaveBeenCalledWith("1");
+	});
+
+	it("should call onUpdateExpense when a cell edit occurs, coercing amount to number", async () => {
+		const user = userEvent.setup();
+		render(
+			<ExpenseGrid
+				expenses={mockExpenses}
+				onUpdateExpense={mockOnUpdateExpense}
+				onDeleteExpense={mockOnDeleteExpense}
+			/>
+		);
+
+		await user.click(screen.getByRole("button", { name: /trigger-edit/i }));
+
+		expect(mockOnUpdateExpense).toHaveBeenCalledWith(
+			expect.objectContaining({ id: "1", amount: 123.45 })
+		);
 	});
 
 	it("should render quick filter input", () => {

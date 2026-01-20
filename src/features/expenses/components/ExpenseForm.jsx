@@ -222,9 +222,10 @@ export function ExpenseForm({ onAddExpense }) {
 					type="text"
 					value={formData.notes}
 					onChange={handleChangeNotes}
-					className={inputBaseStyles}
+					className={`${inputBaseStyles} ${formErrors.notes ? inputErrorStyles : ""}`}
 					placeholder="e.g., Weekly groceries"
 				/>
+				<ErrorMessage message={formErrors.notes} />
 			</div>
 
 			<Button type="submit" className="w-full mt-6">

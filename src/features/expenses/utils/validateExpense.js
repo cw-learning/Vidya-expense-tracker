@@ -1,5 +1,7 @@
 import { EXPENSE_CATEGORIES, EXPENSE_TYPES } from "../models/expense.model.js";
 
+const NOTES_MAX_LENGTH = 500;
+
 export function validateExpenseTitle(title) {
 	if (title === null || title === undefined || typeof title !== "string") {
 		return "title is required";
@@ -70,7 +72,7 @@ export function validateExpenseType(type) {
 
 export function validateExpenseNotes(notes) {
 	if (notes === null || notes === undefined) {
-		return null; // Optional, so no error if missing
+		return null;
 	}
 
 	if (typeof notes !== "string") {
@@ -79,11 +81,11 @@ export function validateExpenseNotes(notes) {
 
 	const trimmedNotes = notes.trim();
 
-	if (trimmedNotes.length > 500) {
-		return "notes must be less than 500 characters";
+	if (trimmedNotes.length > NOTES_MAX_LENGTH) {
+		return `notes must be less than ${NOTES_MAX_LENGTH} characters`;
 	}
 
-	return null; // No error if empty or within limit
+	return null;
 }
 
 export function validateExpense(expenseData) {

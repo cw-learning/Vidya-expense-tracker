@@ -75,7 +75,7 @@ export function ExpensePage() {
 								Your Expenses
 							</h2>
 							<Button
-								onClick={() => setShowForm(!showForm)}
+								onClick={() => setShowForm((previous) => !previous)}
 								className={`px-4 py-2 rounded ${colors.button} ${colors.buttonText}`}
 							>
 								{showForm ? "Cancel" : "+ Add New Expense"}
