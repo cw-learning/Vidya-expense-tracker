@@ -1,4 +1,4 @@
-import { EXPENSE_CATEGORIES } from "../models/expense.model.js";
+import { EXPENSE_CATEGORIES, EXPENSE_TYPES } from "../models/expense.model.js";
 
 export function validateExpenseTitle(title) {
 	if (title === null || title === undefined || typeof title !== "string") {
@@ -54,12 +54,45 @@ export function validateExpenseCategory(category) {
 	return null;
 }
 
+export function validateExpenseType(type) {
+	if (!type) {
+		return "type is required";
+	}
+
+	const validTypes = Object.values(EXPENSE_TYPES);
+
+	if (!validTypes.includes(type)) {
+		return "invalid type selected";
+	}
+
+	return null;
+}
+
+export function validateExpenseNotes(notes) {
+	if (notes === null || notes === undefined) {
+		return null; // Optional, so no error if missing
+	}
+
+	if (typeof notes !== "string") {
+		return "notes must be a string";
+	}
+
+	const trimmedNotes = notes.trim();
+
+	if (trimmedNotes.length > 500) {
+		return "notes must be less than 500 characters";
+	}
+
+	return null; // No error if empty or within limit
+}
+
 export function validateExpense(expenseData) {
 	if (!expenseData || typeof expenseData !== "object") {
 		return {
 			title: "title is required",
 			amount: "amount is required",
 			category: "category is required",
+			type: "type is required",
 		};
 	}
 
@@ -79,6 +112,16 @@ export function validateExpense(expenseData) {
 	const categoryError = validateExpenseCategory(expenseData.category);
 	if (categoryError) {
 		errors.category = categoryError;
+	}
+
+	const typeError = validateExpenseType(expenseData.type);
+	if (typeError) {
+		errors.type = typeError;
+	}
+
+	const notesError = validateExpenseNotes(expenseData.notes);
+	if (notesError) {
+		errors.notes = notesError;
 	}
 
 	return errors;
