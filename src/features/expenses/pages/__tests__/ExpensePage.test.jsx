@@ -29,13 +29,13 @@ describe("ExpensePage", () => {
 		});
 	});
 
-	it("should render expense form", async () => {
+	it("should render expense form toggle button", async () => {
 		render(<ExpensePage />);
 
 		await waitFor(() => {
-			expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
-			expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
-			expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
+			expect(
+				screen.getByRole("button", { name: /add new expense/i })
+			).toBeInTheDocument();
 		});
 	});
 
@@ -54,7 +54,7 @@ describe("ExpensePage", () => {
 		render(<ExpensePage />);
 
 		await waitFor(() => {
-			expect(screen.getByText(/no expenses yet/i)).toBeInTheDocument();
+			expect(screen.getByText("Your Expenses")).toBeInTheDocument();
 		});
 	});
 
@@ -62,14 +62,21 @@ describe("ExpensePage", () => {
 		const user = userEvent.setup();
 		render(<ExpensePage />);
 
+		await user.click(screen.getByRole("button", { name: /add new expense/i }));
+
 		await waitFor(() => {
-			expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
+			expect(
+				screen.getByPlaceholderText("e.g., Grocery shopping")
+			).toBeInTheDocument();
 		});
 
-		await user.type(screen.getByLabelText(/title/i), "Lunch");
-		await user.type(screen.getByLabelText(/amount/i), "50");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Lunch"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "50");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.FOOD
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
@@ -83,14 +90,19 @@ describe("ExpensePage", () => {
 		const user = userEvent.setup();
 		render(<ExpensePage />);
 
+		await user.click(screen.getByRole("button", { name: /add new expense/i }));
+
 		await waitFor(() => {
 			expect(screen.getByText("Total Expenses")).toBeInTheDocument();
 		});
 
-		await user.type(screen.getByLabelText(/title/i), "Lunch");
-		await user.type(screen.getByLabelText(/amount/i), "50");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Lunch"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "50");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.FOOD
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
@@ -103,22 +115,32 @@ describe("ExpensePage", () => {
 		const user = userEvent.setup();
 		render(<ExpensePage />);
 
+		await user.click(screen.getByRole("button", { name: /add new expense/i }));
+
 		await waitFor(() => {
-			expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
+			expect(
+				screen.getByPlaceholderText("e.g., Grocery shopping")
+			).toBeInTheDocument();
 		});
 
-		await user.type(screen.getByLabelText(/title/i), "Lunch");
-		await user.type(screen.getByLabelText(/amount/i), "50");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Lunch"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "50");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.FOOD
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
 
-		await user.type(screen.getByLabelText(/title/i), "Bus");
-		await user.type(screen.getByLabelText(/amount/i), "20");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Bus"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "20");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.TRANSPORT
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
@@ -134,14 +156,21 @@ describe("ExpensePage", () => {
 		const user = userEvent.setup();
 		render(<ExpensePage />);
 
+		await user.click(screen.getByRole("button", { name: /add new expense/i }));
+
 		await waitFor(() => {
-			expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
+			expect(
+				screen.getByPlaceholderText("e.g., Grocery shopping")
+			).toBeInTheDocument();
 		});
 
-		await user.type(screen.getByLabelText(/title/i), "Lunch");
-		await user.type(screen.getByLabelText(/amount/i), "50");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Lunch"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "50");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.FOOD
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
@@ -150,29 +179,38 @@ describe("ExpensePage", () => {
 		await user.click(deleteButton);
 
 		expect(screen.queryByText("Lunch")).not.toBeInTheDocument();
-		expect(screen.getByText(/no expenses yet/i)).toBeInTheDocument();
 	});
 
 	it("should update total when expense is deleted", async () => {
 		const user = userEvent.setup();
 		render(<ExpensePage />);
 
+		await user.click(screen.getByRole("button", { name: /add new expense/i }));
+
 		await waitFor(() => {
-			expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
+			expect(
+				screen.getByPlaceholderText("e.g., Grocery shopping")
+			).toBeInTheDocument();
 		});
 
-		await user.type(screen.getByLabelText(/title/i), "Lunch");
-		await user.type(screen.getByLabelText(/amount/i), "50");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Lunch"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "50");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.FOOD
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
 
-		await user.type(screen.getByLabelText(/title/i), "Bus");
-		await user.type(screen.getByLabelText(/amount/i), "20");
+		await user.type(
+			screen.getByPlaceholderText("e.g., Grocery shopping"),
+			"Bus"
+		);
+		await user.type(screen.getByPlaceholderText("0.00"), "20");
 		await user.selectOptions(
-			screen.getByLabelText(/category/i),
+			screen.getByRole("combobox", { name: /category/i }),
 			EXPENSE_CATEGORIES.TRANSPORT
 		);
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
