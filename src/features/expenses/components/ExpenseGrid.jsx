@@ -41,8 +41,6 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 
 	const [quickFilterText, setQuickFilterText] = useState("");
 
-	const rowSelection = useMemo(() => ({ mode: "multiRow" }), []);
-
 	const columnDefs = useMemo(
 		() => [
 			{
@@ -171,6 +169,9 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 			const field = event.colDef.field;
 			if (!field) return;
 
+			const data = event.data;
+			if (!data) return;
+
 			if (field === "amount") {
 				const raw =
 					typeof event.newValue === "string"
@@ -180,9 +181,9 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 				if (raw === "" || raw === null || raw === undefined) return;
 
 				const amount = Number(raw);
-				if (!Number.isFinite(amount)) return;
+				if (!Number.isFinite(amount) || amount <= 0) return;
 
-				onUpdateExpense({ ...event.data, amount });
+				onUpdateExpense({ ...data, amount });
 				return;
 			}
 
@@ -191,7 +192,7 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 					? event.newValue.trim()
 					: event.newValue;
 
-			onUpdateExpense({ ...event.data, [field]: nextValue });
+			onUpdateExpense({ ...data, [field]: nextValue });
 		},
 		[onUpdateExpense]
 	);
@@ -268,7 +269,6 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 					rowClassRules={rowClassRules}
 					onCellValueChanged={onCellValueChanged}
 					quickFilterText={quickFilterText}
-					rowSelection={rowSelection}
 					pagination={true}
 					paginationPageSize={10}
 					paginationPageSizeSelector={[10, 20, 50]}
