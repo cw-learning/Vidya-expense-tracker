@@ -33,8 +33,9 @@ ModuleRegistry.registerModules([
 	ColumnsToolPanelModule,
 ]);
 
+const HIGH_AMOUNT_THRESHOLD = 1000;
+
 export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
-	const HIGH_AMOUNT_THRESHOLD = 1000;
 	const { theme } = useThemeStore();
 	const colors = THEME_COLORS[theme];
 
@@ -159,8 +160,8 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 
 	const rowClassRules = useMemo(
 		() => ({
-			"highlight-high-amount": (amountParams) =>
-				amountParams.data?.amount > HIGH_AMOUNT_THRESHOLD,
+			"highlight-high-amount": (params) =>
+				params.data?.amount > HIGH_AMOUNT_THRESHOLD,
 		}),
 		[]
 	);
@@ -170,19 +171,27 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 			const field = event.colDef.field;
 			if (!field) return;
 
-			const nextValue =
-				field === "amount"
-					? Number(event.newValue)
-					: typeof event.newValue === "string"
+			if (field === "amount") {
+				const raw =
+					typeof event.newValue === "string"
 						? event.newValue.trim()
 						: event.newValue;
 
-			if (field === "amount" && Number.isNaN(nextValue)) return;
+				if (raw === "" || raw === null || raw === undefined) return;
 
-			onUpdateExpense({
-				...event.data,
-				[field]: nextValue,
-			});
+				const amount = Number(raw);
+				if (!Number.isFinite(amount)) return;
+
+				onUpdateExpense({ ...event.data, amount });
+				return;
+			}
+
+			const nextValue =
+				typeof event.newValue === "string"
+					? event.newValue.trim()
+					: event.newValue;
+
+			onUpdateExpense({ ...event.data, [field]: nextValue });
 		},
 		[onUpdateExpense]
 	);
@@ -242,13 +251,6 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 		[]
 	);
 
-	const gridContext = useMemo(
-		() => ({
-			onDeleteExpense,
-		}),
-		[onDeleteExpense]
-	);
-
 	return (
 		<div className={`${colors.background} p-4 rounded-lg`}>
 			<input
@@ -271,12 +273,10 @@ export function ExpenseGrid({ expenses, onUpdateExpense, onDeleteExpense }) {
 					paginationPageSize={10}
 					paginationPageSizeSelector={[10, 20, 50]}
 					groupDisplayType="groupRows"
-					context={{ onDeleteExpense }}
 					theme={myTheme}
 					groupDefaultExpanded={-1}
 					showOpenedGroup={true}
 					sideBar={sideBar}
-					gridContext={gridContext}
 				/>
 			</div>
 		</div>

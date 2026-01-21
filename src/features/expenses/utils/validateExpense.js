@@ -82,7 +82,7 @@ export function validateExpenseNotes(notes) {
 	const trimmedNotes = notes.trim();
 
 	if (trimmedNotes.length > NOTES_MAX_LENGTH) {
-		return `notes must be less than ${NOTES_MAX_LENGTH} characters`;
+		return `notes must be ${NOTES_MAX_LENGTH} characters or less`;
 	}
 
 	return null;

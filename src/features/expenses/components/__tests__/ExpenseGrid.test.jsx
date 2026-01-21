@@ -25,25 +25,29 @@ vi.mock("ag-grid-react", () => ({
 
 			{rowData.map((row, index) => (
 				<div key={row.id} data-testid={`grid-row-${index}`}>
-					{columnDefs.map((col) => {
+					{columnDefs.map((col, colIndex) => {
+						const colId =
+							col.field ?? col.colId ?? col.headerName ?? `col-${colIndex}`;
+
 						if (col.cellRenderer) {
+							const renderedValue = col.cellRenderer({ data: row, context });
 							return (
-								<div
-									key={col.field || col.headerName}
-									data-testid={`cell-${col.field || col.headerName}-${index}`}
-								>
-									{col.cellRenderer({ data: row, context })}
+								<div key={colId} data-testid={`cell-${colId}-${index}`}>
+									{renderedValue}
 								</div>
 							);
 						}
+
 						const value = col.valueGetter
 							? col.valueGetter({ data: row })
 							: row[col.field];
+
 						const formattedValue = col.valueFormatter
 							? col.valueFormatter({ value })
 							: value;
+
 						return (
-							<div key={col.field} data-testid={`cell-${col.field}-${index}`}>
+							<div key={colId} data-testid={`cell-${colId}-${index}`}>
 								{formattedValue}
 							</div>
 						);

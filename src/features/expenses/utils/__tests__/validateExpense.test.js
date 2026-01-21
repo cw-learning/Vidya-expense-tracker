@@ -122,7 +122,7 @@ describe("validateExpenseNotes", () => {
 	it("should return error for notes longer than 500 characters", () => {
 		const longNotes = "a".repeat(501);
 		expect(validateExpenseNotes(longNotes)).toBe(
-			"notes must be less than 500 characters"
+			"notes must be 500 characters or less"
 		);
 	});
 
@@ -166,7 +166,7 @@ describe("validateExpense", () => {
 		expect(errors.amount).toBe("amount must be greater than zero");
 		expect(errors.category).toBe("invalid category selected");
 		expect(errors.type).toBe("invalid type selected");
-		expect(errors.notes).toBe("notes must be less than 500 characters");
+		expect(errors.notes).toBe("notes must be 500 characters or less");
 	});
 
 	it("should return specific errors for partially invalid expense", () => {
