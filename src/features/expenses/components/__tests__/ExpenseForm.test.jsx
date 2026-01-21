@@ -1,7 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { EXPENSE_CATEGORIES } from "../../models/expense.model.js";
+import {
+	EXPENSE_CATEGORIES,
+	EXPENSE_TYPES,
+} from "../../models/expense.model.js";
 import { ExpenseForm } from "../ExpenseForm.jsx";
 
 describe("ExpenseForm", () => {
@@ -11,6 +14,8 @@ describe("ExpenseForm", () => {
 		expect(screen.getByLabelText(/title/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/amount/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/category/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/type/i)).toBeInTheDocument();
+		expect(screen.getByLabelText(/notes/i)).toBeInTheDocument();
 		expect(
 			screen.getByRole("button", { name: /add expense/i })
 		).toBeInTheDocument();
@@ -44,6 +49,26 @@ describe("ExpenseForm", () => {
 		await user.selectOptions(categorySelect, EXPENSE_CATEGORIES.FOOD);
 
 		expect(categorySelect).toHaveValue(EXPENSE_CATEGORIES.FOOD);
+	});
+
+	it("should update type select on change", async () => {
+		const user = userEvent.setup();
+		render(<ExpenseForm onAddExpense={vi.fn()} />);
+
+		const typeSelect = screen.getByLabelText(/type/i);
+		await user.selectOptions(typeSelect, EXPENSE_TYPES.INCOME);
+
+		expect(typeSelect).toHaveValue(EXPENSE_TYPES.INCOME);
+	});
+
+	it("should update notes input on change", async () => {
+		const user = userEvent.setup();
+		render(<ExpenseForm onAddExpense={vi.fn()} />);
+
+		const notesInput = screen.getByLabelText(/notes/i);
+		await user.type(notesInput, "Some notes");
+
+		expect(notesInput).toHaveValue("Some notes");
 	});
 
 	it("should show validation errors for empty form submission", async () => {
@@ -93,6 +118,11 @@ describe("ExpenseForm", () => {
 			screen.getByLabelText(/category/i),
 			EXPENSE_CATEGORIES.FOOD
 		);
+		await user.selectOptions(
+			screen.getByLabelText(/type/i),
+			EXPENSE_TYPES.EXPENSE
+		);
+		await user.type(screen.getByLabelText(/notes/i), "Optional notes");
 		await user.click(screen.getByRole("button", { name: /add expense/i }));
 
 		expect(handleAddExpense).toHaveBeenCalledTimes(1);
@@ -101,6 +131,8 @@ describe("ExpenseForm", () => {
 			title: "Lunch",
 			amount: 50,
 			category: EXPENSE_CATEGORIES.FOOD,
+			type: EXPENSE_TYPES.EXPENSE,
+			notes: "Optional notes",
 		});
 		expect(expense.id).toBeDefined();
 		expect(expense.createdAt).toBeDefined();

@@ -20,13 +20,33 @@ export const EXPENSE_CATEGORY_LABELS = {
 	[EXPENSE_CATEGORIES.OTHER]: "Other",
 };
 
-// Create a new expense object with a unique id, trimmed title, numeric amount, category, and creation timestamp
-export function createExpense(title, amount, category) {
+// Expense types
+export const EXPENSE_TYPES = {
+	INCOME: "income",
+	EXPENSE: "expense",
+};
+
+// Labels for expense types
+export const EXPENSE_TYPE_LABELS = {
+	[EXPENSE_TYPES.INCOME]: "Income",
+	[EXPENSE_TYPES.EXPENSE]: "Expense",
+};
+
+// Create a new expense object with a unique id, trimmed title, numeric amount, category, type, notes, and creation timestamp
+export function createExpense(
+	title,
+	amount,
+	category,
+	type = EXPENSE_TYPES.EXPENSE,
+	notes = ""
+) {
 	return {
 		id: crypto.randomUUID(),
 		title: title.trim(),
 		amount: Number(amount),
 		category,
+		type,
+		notes: notes.trim(),
 		createdAt: new Date().toISOString(),
 	};
 }
