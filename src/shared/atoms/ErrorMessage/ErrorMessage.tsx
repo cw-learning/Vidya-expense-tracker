@@ -1,6 +1,10 @@
+import type { JSX } from 'react';
 import type { ErrorMessageProps } from './ErrorMessage.types';
 
-export function ErrorMessage({ message, className = '' }: ErrorMessageProps) {
+export function ErrorMessage({
+  message,
+  className = '',
+}: ErrorMessageProps): JSX.Element | null {
   if (!message) {
     return null;
   }

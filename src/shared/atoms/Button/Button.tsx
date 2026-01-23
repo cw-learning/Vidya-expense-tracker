@@ -3,20 +3,41 @@ import { getButtonClasses } from './Button.utils';
 
 export function Button({
   children,
-  onClick,
   type = 'button',
   variant = 'primary',
-  disabled = false,
   className = '',
+  disabled,
+  onClick,
+  ...props
 }: ButtonProps) {
-  return (
+  const handleSafeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (disabled) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    onClick?.(e);
+  };
+
+  const buttonElement = (
     <button
       type={type}
-      onClick={onClick}
       disabled={disabled}
+      aria-disabled={disabled}
+      onClick={handleSafeClick}
       className={getButtonClasses(variant, className)}
+      {...props}
     >
       {children}
     </button>
   );
+
+  // Wrap disabled buttons in a div with cursor-not-allowed
+  if (disabled) {
+    return (
+      <div className="inline-block cursor-not-allowed">{buttonElement}</div>
+    );
+  }
+
+  return buttonElement;
 }
