@@ -1,3 +1,4 @@
+import type { JSX, MouseEvent } from 'react';
 import type { ButtonProps } from './Button.types';
 import { getButtonClasses } from './Button.utils';
 
@@ -9,35 +10,21 @@ export function Button({
   disabled,
   onClick,
   ...props
-}: ButtonProps) {
-  const handleSafeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
+}: ButtonProps): JSX.Element {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     onClick?.(e);
   };
 
-  const buttonElement = (
+  return (
     <button
       type={type}
       disabled={disabled}
-      aria-disabled={disabled}
-      onClick={handleSafeClick}
+      aria-disabled={disabled || undefined}
+      onClick={handleClick}
       className={getButtonClasses(variant, className)}
       {...props}
     >
       {children}
     </button>
   );
-
-  // Wrap disabled buttons in a div with cursor-not-allowed
-  if (disabled) {
-    return (
-      <div className="inline-block cursor-not-allowed">{buttonElement}</div>
-    );
-  }
-
-  return buttonElement;
 }
