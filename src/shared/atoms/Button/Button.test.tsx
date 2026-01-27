@@ -3,7 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { Button } from './Button';
 
+const mockHandleClick = vi.fn();
+
 describe('Button', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
   it('renders with default props', () => {
     render(<Button>Click me</Button>);
     const button = screen.getByRole('button', { name: /click me/i });
@@ -27,22 +32,20 @@ describe('Button', () => {
 
   it('calls onClick when clicked', async () => {
     const user = userEvent.setup();
-    const handleClick = vi.fn();
 
-    render(<Button onClick={handleClick}>Clickable</Button>);
+    render(<Button onClick={mockHandleClick}>Clickable</Button>);
 
     const button = screen.getByRole('button', { name: /clickable/i });
     await user.click(button);
 
-    expect(handleClick).toHaveBeenCalledTimes(1);
+    expect(mockHandleClick).toHaveBeenCalledTimes(1);
   });
 
   it('does not call onClick when disabled', async () => {
     const user = userEvent.setup();
-    const handleClick = vi.fn();
 
     render(
-      <Button disabled onClick={handleClick}>
+      <Button disabled onClick={mockHandleClick}>
         Disabled Click
       </Button>,
     );
@@ -51,6 +54,6 @@ describe('Button', () => {
 
     await user.click(button);
 
-    expect(handleClick).not.toHaveBeenCalled();
+    expect(mockHandleClick).not.toHaveBeenCalled();
   });
 });

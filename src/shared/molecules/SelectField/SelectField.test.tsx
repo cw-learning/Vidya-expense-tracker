@@ -3,19 +3,25 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { SelectField } from './SelectField';
 
+const mockHandleChange = vi.fn();
+
+const fixtureOptions = [
+  { value: 'food', label: 'Food' },
+  { value: 'transport', label: 'Transport' },
+];
+
 describe('SelectField', () => {
-  const options = [
-    { value: 'food', label: 'Food' },
-    { value: 'transport', label: 'Transport' },
-  ];
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it('renders label, select, and options', () => {
     render(
       <SelectField
         label="Category"
         value=""
-        onChange={vi.fn()}
-        options={options}
+        onChange={mockHandleChange}
+        options={fixtureOptions}
       />,
     );
     expect(screen.getByLabelText('Category')).toBeInTheDocument();
@@ -28,8 +34,8 @@ describe('SelectField', () => {
       <SelectField
         label="Category"
         value="food"
-        onChange={vi.fn()}
-        options={options}
+        onChange={mockHandleChange}
+        options={fixtureOptions}
       />,
     );
     expect(screen.getByRole('combobox')).toHaveValue('food');
@@ -40,8 +46,8 @@ describe('SelectField', () => {
       <SelectField
         label="Category"
         value=""
-        onChange={vi.fn()}
-        options={options}
+        onChange={mockHandleChange}
+        options={fixtureOptions}
         error="Required"
       />,
     );
@@ -50,18 +56,17 @@ describe('SelectField', () => {
 
   it('calls onChange on selection', async () => {
     const user = userEvent.setup();
-    const handleChange = vi.fn();
     render(
       <SelectField
         label="Category"
         value=""
-        onChange={handleChange}
-        options={options}
+        onChange={mockHandleChange}
+        options={fixtureOptions}
       />,
     );
     const select = screen.getByRole('combobox');
     await user.selectOptions(select, 'transport');
-    expect(handleChange).toHaveBeenCalledTimes(1);
+    expect(mockHandleChange).toHaveBeenCalledTimes(1);
   });
 
   it('applies custom placeholder', () => {
@@ -69,8 +74,8 @@ describe('SelectField', () => {
       <SelectField
         label="Type"
         value=""
-        onChange={vi.fn()}
-        options={options}
+        onChange={mockHandleChange}
+        options={fixtureOptions}
         placeholder="Choose type"
       />,
     );

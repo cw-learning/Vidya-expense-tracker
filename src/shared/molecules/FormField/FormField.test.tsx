@@ -3,10 +3,19 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { FormField } from './FormField';
 
+const mockHandleChange = vi.fn();
+
 describe('FormField', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
   it('renders label, input, and handles value', () => {
     render(
-      <FormField label="Test Label" value="test value" onChange={vi.fn()} />,
+      <FormField
+        label="Test Label"
+        value="test value"
+        onChange={mockHandleChange}
+      />,
     );
     const input = screen.getByLabelText('Test Label');
     expect(input).toBeInTheDocument();
@@ -15,7 +24,12 @@ describe('FormField', () => {
 
   it('applies custom type', () => {
     render(
-      <FormField label="Amount" type="number" value="" onChange={vi.fn()} />,
+      <FormField
+        label="Amount"
+        type="number"
+        value=""
+        onChange={mockHandleChange}
+      />,
     );
     const input = screen.getByLabelText('Amount');
     expect(input).toHaveAttribute('type', 'number');
@@ -23,24 +37,28 @@ describe('FormField', () => {
 
   it('displays error message', () => {
     render(
-      <FormField label="Title" value="" onChange={vi.fn()} error="Required" />,
+      <FormField
+        label="Title"
+        value=""
+        onChange={mockHandleChange}
+        error="Required"
+      />,
     );
     expect(screen.getByRole('alert')).toHaveTextContent('Required');
   });
 
   it('does not display error when none', () => {
-    render(<FormField label="Title" value="" onChange={vi.fn()} />);
+    render(<FormField label="Title" value="" onChange={mockHandleChange} />);
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('calls onChange on input', async () => {
     const user = userEvent.setup();
-    const handleChange = vi.fn();
 
-    render(<FormField label="Title" value="" onChange={handleChange} />);
+    render(<FormField label="Title" value="" onChange={mockHandleChange} />);
     const input = screen.getByLabelText('Title');
     await user.type(input, 'new value');
 
-    expect(handleChange).toHaveBeenCalled();
+    expect(mockHandleChange).toHaveBeenCalled();
   });
 });
