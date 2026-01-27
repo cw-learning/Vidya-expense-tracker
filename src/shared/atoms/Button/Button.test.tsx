@@ -1,5 +1,5 @@
-import { screen } from '@testing-library/dom';
-import { fireEvent, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { Button } from './Button';
 
@@ -25,23 +25,32 @@ describe('Button', () => {
     expect(button).toHaveAttribute('aria-disabled', 'true');
   });
 
-  it('calls onClick when clicked', () => {
+  it('calls onClick when clicked', async () => {
+    const user = userEvent.setup();
     const handleClick = vi.fn();
+
     render(<Button onClick={handleClick}>Clickable</Button>);
+
     const button = screen.getByRole('button', { name: /clickable/i });
-    fireEvent.click(button);
+    await user.click(button);
+
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('does not call onClick when disabled', () => {
+  it('does not call onClick when disabled', async () => {
+    const user = userEvent.setup();
     const handleClick = vi.fn();
+
     render(
       <Button disabled onClick={handleClick}>
         Disabled Click
       </Button>,
     );
+
     const button = screen.getByRole('button', { name: /disabled click/i });
-    fireEvent.click(button);
+
+    await user.click(button).catch(() => {});
+
     expect(handleClick).not.toHaveBeenCalled();
   });
 });

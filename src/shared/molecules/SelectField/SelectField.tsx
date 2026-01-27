@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import type { JSX } from 'react';
+import { twMerge } from 'tailwind-merge';
 import { ErrorMessage } from '../../atoms/ErrorMessage/ErrorMessage';
 import { LABEL_STYLES, SELECT_STYLES } from './SelectField.styles';
 import type { SelectFieldProps } from './SelectField.types';
@@ -15,12 +16,14 @@ export function SelectField({
   className = '',
 }: SelectFieldProps): JSX.Element {
   const selectId = id || `select-${label.toLowerCase().replace(/\s+/g, '-')}`;
-  const selectDynamicClasses = clsx(SELECT_STYLES, {
-    'border-red-500 focus:ring-red-500': error,
-  });
+  const selectDynamicClasses = twMerge(
+    clsx(SELECT_STYLES, {
+      'border-red-500 focus:ring-red-500': error,
+    }),
+  );
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={twMerge('relative', className)}>
       <label htmlFor={selectId} className={LABEL_STYLES}>
         {label}
       </label>
