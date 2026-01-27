@@ -1,2 +1,1 @@
-export const CARD_STYLES =
-  'bg-white rounded-lg shadow-md p-6 border border-gray-200';
+export const CARD_STYLES = 'rounded-lg shadow-md p-6 border';

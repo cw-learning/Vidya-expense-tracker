@@ -1,4 +1,4 @@
-import type { JSX, MouseEvent } from 'react';
+import type { JSX } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { BASE_STYLES, VARIANT_STYLES } from './Button.styles';
 import type { ButtonProps } from './Button.types';
@@ -11,10 +11,6 @@ export function Button({
   disabled,
   onClick,
 }: ButtonProps): JSX.Element {
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onClick?.(event);
-  };
-
   const buttonClasses = twMerge(
     BASE_STYLES,
     VARIANT_STYLES[variant],
@@ -26,7 +22,7 @@ export function Button({
       type={type}
       disabled={disabled}
       aria-disabled={disabled || undefined}
-      onClick={handleClick}
+      onClick={onClick}
       className={buttonClasses}
     >
       {children}

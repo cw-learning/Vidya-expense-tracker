@@ -12,6 +12,7 @@
     "postcss",
     "biome",
     "biomejs",
-    "codewalnut"
+    "codewalnut",
+    "partialize"
   ]
 }

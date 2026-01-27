@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { THEME_MODES, THEME_STORAGE_KEY } from '../constants/theme.constants';
 import type { ThemeMode } from '../theme.types';
 
@@ -20,10 +20,15 @@ export const useThemeStore = create<ThemeStore>()(
               ? THEME_MODES.DARK
               : THEME_MODES.LIGHT,
         })),
-      setTheme: (theme) => set(() => ({ theme })),
+      setTheme: (theme) => set({ theme }),
     }),
     {
       name: THEME_STORAGE_KEY,
+      partialize: (state) => ({ theme: state.theme }),
+      storage:
+        typeof window === 'undefined'
+          ? undefined
+          : createJSONStorage(() => window.localStorage),
     },
   ),
 );
