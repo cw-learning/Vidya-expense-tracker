@@ -21,8 +21,20 @@ describe('ThemeToggle', () => {
       toggleTheme: mockToggleTheme,
     });
     render(<ThemeToggle />);
-    expect(screen.getByText('🌙')).toBeInTheDocument();
-    expect(screen.getByText('Dark')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /switch to dark mode/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders with dark mode initially', () => {
+    vi.mocked(useThemeStore).mockReturnValue({
+      theme: 'dark',
+      toggleTheme: mockToggleTheme,
+    });
+    render(<ThemeToggle />);
+    expect(
+      screen.getByRole('button', { name: /switch to light mode/i }),
+    ).toBeInTheDocument();
   });
 
   it('toggles to dark mode on click', async () => {
