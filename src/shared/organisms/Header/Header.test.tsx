@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-// import { vi } from 'vitest'; -> Yet to add
+import { vi } from 'vitest';
 import { Header } from './Header';
 
-// vi.mock('../../../theme/components/ThemeToggle', () => ({
-//   ThemeToggle: () => <div>ThemeToggle</div>,
-// })); -> Yet to add
+vi.mock('../../../features/theme/components/ThemeToggle/ThemeToggle', () => ({
+  ThemeToggle: () => <div>ThemeToggle</div>,
+}));
 
 describe('Header', () => {
   it('renders title, subtitle, and ThemeToggle', () => {

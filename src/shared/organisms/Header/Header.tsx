@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { ThemeToggle } from '../../../features/theme/components/ThemeToggle/ThemeToggle';
 import { HEADER_STYLES } from './Header.styles';
-// import { ThemeToggle } from '../../../theme/components/ThemeToggle'; -> Yet to add
 import type { HeaderProps } from './Header.types';
 
 export function Header({
@@ -20,7 +20,7 @@ export function Header({
           </h1>
           <p className="text-sm font-medium opacity-70">{subtitle}</p>
         </div>
-        {/* <ThemeToggle /> */}
+        <ThemeToggle />
       </div>
     </header>
   );
