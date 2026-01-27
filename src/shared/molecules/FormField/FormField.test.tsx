@@ -39,6 +39,6 @@ describe('FormField', () => {
     render(<FormField label="Title" value="" onChange={handleChange} />);
     const input = screen.getByLabelText('Title');
     await user.type(input, 'new value');
-    expect(handleChange).toHaveBeenCalled();
+    expect(handleChange).toHaveBeenCalledTimes(9);
   });
 });

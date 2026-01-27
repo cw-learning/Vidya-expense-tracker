@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type { JSX } from 'react';
+import { type JSX, useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ErrorMessage } from '../../atoms/ErrorMessage/ErrorMessage';
 import { INPUT_STYLES, LABEL_STYLES } from './FormField.styles';
@@ -15,16 +15,16 @@ export function FormField({
   id,
   className = '',
 }: FormFieldProps): JSX.Element {
-  const inputId = id || `field-${label.toLowerCase().replace(/\s+/g, '-')}`;
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = error ? `${inputId}-error` : undefined;
 
-  const inputDynamicClasses = twMerge(
-    clsx(INPUT_STYLES, {
-      'border-red-500 focus:ring-red-500': error,
-    }),
+  const inputClasses = twMerge(
+    clsx(INPUT_STYLES, { 'border-red-500 focus:ring-red-500': !!error }),
   );
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={twMerge('relative', className)}>
       <label htmlFor={inputId} className={LABEL_STYLES}>
         {label}
       </label>
@@ -33,10 +33,12 @@ export function FormField({
         type={type}
         value={value}
         onChange={onChange}
-        className={inputDynamicClasses}
+        className={inputClasses}
         placeholder={placeholder}
+        aria-invalid={!!error}
+        aria-describedby={errorId}
       />
-      <ErrorMessage message={error} />
+      <ErrorMessage id={errorId} message={error} />
     </div>
   );
 }

@@ -49,7 +49,7 @@ describe('Button', () => {
 
     const button = screen.getByRole('button', { name: /disabled click/i });
 
-    await user.click(button).catch(() => {});
+    await user.click(button);
 
     expect(handleClick).not.toHaveBeenCalled();
   });

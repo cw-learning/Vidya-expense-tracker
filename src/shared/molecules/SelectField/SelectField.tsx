@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type { JSX } from 'react';
+import { type JSX, useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ErrorMessage } from '../../atoms/ErrorMessage/ErrorMessage';
 import { LABEL_STYLES, SELECT_STYLES } from './SelectField.styles';
@@ -15,11 +15,12 @@ export function SelectField({
   id,
   className = '',
 }: SelectFieldProps): JSX.Element {
-  const selectId = id || `select-${label.toLowerCase().replace(/\s+/g, '-')}`;
-  const selectDynamicClasses = twMerge(
-    clsx(SELECT_STYLES, {
-      'border-red-500 focus:ring-red-500': error,
-    }),
+  const generatedId = useId();
+  const selectId = id ?? generatedId;
+  const errorId = error ? `${selectId}-error` : undefined;
+
+  const selectClasses = twMerge(
+    clsx(SELECT_STYLES, { 'border-red-500 focus:ring-red-500': !!error }),
   );
 
   return (
@@ -31,7 +32,9 @@ export function SelectField({
         id={selectId}
         value={value}
         onChange={onChange}
-        className={selectDynamicClasses}
+        className={selectClasses}
+        aria-invalid={!!error}
+        aria-describedby={errorId}
       >
         <option value="">{placeholder}</option>
         {options.map((option) => (
@@ -40,7 +43,7 @@ export function SelectField({
           </option>
         ))}
       </select>
-      <ErrorMessage message={error} />
+      <ErrorMessage id={errorId} message={error} />
     </div>
   );
 }
