@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import type { JSX, MouseEvent } from 'react';
+import { BASE_STYLES, VARIANT_STYLES } from './Button.styles';
 import type { ButtonProps } from './Button.types';
-import { getButtonClasses } from './Button.utils';
 
 export function Button({
   children,
@@ -9,11 +10,12 @@ export function Button({
   className = '',
   disabled,
   onClick,
-  ...props
 }: ButtonProps): JSX.Element {
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    onClick?.(e);
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
   };
+
+  const buttonClasses = clsx(BASE_STYLES, VARIANT_STYLES[variant], className);
 
   return (
     <button
@@ -21,8 +23,7 @@ export function Button({
       disabled={disabled}
       aria-disabled={disabled || undefined}
       onClick={handleClick}
-      className={getButtonClasses(variant, className)}
-      {...props}
+      className={buttonClasses}
     >
       {children}
     </button>

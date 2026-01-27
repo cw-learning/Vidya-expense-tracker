@@ -1,5 +1,3 @@
-import type { ButtonVariantType } from './Button.types';
-
 export const BASE_STYLES = `
   px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-md
   transform cursor-pointer
@@ -16,4 +14,4 @@ export const VARIANT_STYLES = {
     'bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800 disabled:active:bg-gray-600',
   danger:
     'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 shadow-red-200 disabled:active:bg-red-600',
-} as const satisfies Record<ButtonVariantType, string>;
+} as const;
