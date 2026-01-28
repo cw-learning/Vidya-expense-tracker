@@ -5,9 +5,10 @@ export function useFormField(initialValue: string = '') {
   const [error, setError] = useState<string | null>(null);
 
   const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    setValue(e.target.value);
+    const { value } = event.target;
+    setValue(value);
     if (error) setError(null);
   };
 

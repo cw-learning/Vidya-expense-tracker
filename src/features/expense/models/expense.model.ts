@@ -1,13 +1,17 @@
 import { EXPENSE_TYPES } from '../constants/expense.constants';
-import type { Expense } from '../types/expense.types';
+import type {
+  ExpenseCategoryType,
+  ExpenseProps,
+  ExpenseType,
+} from '../types/expense.types';
 
 export function createExpense(
   title: string,
   amount: string,
-  category: string,
-  type: string = EXPENSE_TYPES.EXPENSE,
+  category: ExpenseCategoryType,
+  type: ExpenseType = EXPENSE_TYPES.EXPENSE,
   notes: string = '',
-): Expense {
+): ExpenseProps {
   return {
     id: crypto.randomUUID(),
     title: title.trim(),

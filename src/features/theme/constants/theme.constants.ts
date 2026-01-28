@@ -8,6 +8,7 @@ export const THEME_MODES = {
 export const THEME_COLORS: Record<ThemeMode, ThemeColors> = {
   [THEME_MODES.LIGHT]: {
     background: 'bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50',
+    bg: 'bg-white',
     text: 'text-gray-900',
     card: 'bg-white',
     cardText: 'text-gray-800',
@@ -25,6 +26,7 @@ export const THEME_COLORS: Record<ThemeMode, ThemeColors> = {
   },
   [THEME_MODES.DARK]: {
     background: 'bg-gradient-to-br from-slate-900 via-gray-900 to-zinc-900',
+    bg: 'bg-slate-800',
     text: 'text-gray-100',
     card: 'bg-slate-800',
     cardText: 'text-gray-200',

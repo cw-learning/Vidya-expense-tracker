@@ -4,6 +4,7 @@ export type ThemeMode = (typeof THEME_MODES)[keyof typeof THEME_MODES];
 
 export interface ThemeColors {
   background: string;
+  bg: string;
   text: string;
   card: string;
   cardText: string;

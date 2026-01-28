@@ -1,14 +1,14 @@
 import { act, renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 import * as expenseModel from '../../models/expense.model';
-import type { Expense } from '../../types/expense.types';
+import type { ExpenseProps } from '../../types/expense.types';
 import * as validation from '../../utils/validation/validateExpense';
 import { useExpenseForm } from './useExpenseForm';
 
 vi.mock('../../models/expense.model');
 vi.mock('../../utils/validation/validateExpense');
 
-const fixtureExpense: Expense = {
+const fixtureExpense: ExpenseProps = {
   id: '1',
   title: 'Test',
   amount: 100,
@@ -34,7 +34,6 @@ describe('useExpenseForm', () => {
   });
 
   it('submits form successfully', () => {
-    const mockOnAdd = vi.fn();
     const { result } = renderHook(() => useExpenseForm(mockOnAdd));
     const mockEvent = { preventDefault: vi.fn() } as unknown as React.FormEvent;
     act(() => result.current.handleSubmit(mockEvent));

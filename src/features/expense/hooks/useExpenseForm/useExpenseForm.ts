@@ -1,22 +1,25 @@
 import { useState } from 'react';
 import { EXPENSE_TYPES } from '../../constants/expense.constants';
-import { createExpense } from '../../models/expense.model';
-import type { Expense, ExpenseFormData } from '../../types/expense.types';
+import { createExpense } from './../../models/expense.model';
+import type {
+  ExpenseFormDataProps,
+  ExpenseProps,
+} from '../../types/expense.types';
 import { validateExpense } from '../../utils/validation/validateExpense';
 
-const INITIAL_FORM_STATE: ExpenseFormData = {
+const INITIAL_FORM_STATE: ExpenseFormDataProps = {
   title: '',
   amount: '',
-  category: '',
+  category: 'food',
   type: EXPENSE_TYPES.EXPENSE,
   notes: '',
 };
 
-export function useExpenseForm(onAddExpense: (expense: Expense) => void) {
+export function useExpenseForm(onAddExpense: (expense: ExpenseProps) => void) {
   const [formData, setFormData] = useState(INITIAL_FORM_STATE);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  const updateField = (field: keyof ExpenseFormData, value: string) => {
+  const updateField = (field: keyof ExpenseFormDataProps, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (formErrors[field]) {
       setFormErrors((prev) => ({ ...prev, [field]: '' }));
