@@ -245,21 +245,25 @@ export function ExpenseGrid({
   const onCellValueChanged = useCallback(
     (event: CellValueChangedEvent<ExpenseProps>) => {
       const field = event.colDef.field;
-      if (!field) return;
+      if (!field || !event.data) return;
+
+      const revert = () => {
+        event.node.setDataValue(field, event.oldValue);
+      };
 
       const data = event.data;
-      if (!data) return;
 
       if (field === 'amount') {
         const raw =
           typeof event.newValue === 'string'
             ? event.newValue.trim()
             : event.newValue;
-
-        if (raw === '' || raw === null || raw === undefined) return;
-
         const amount = Number(raw);
-        if (!Number.isFinite(amount) || amount <= 0) return;
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+          revert();
+          return;
+        }
 
         onUpdateExpense({ ...data, amount });
         return;
@@ -270,6 +274,52 @@ export function ExpenseGrid({
           ? event.newValue.trim()
           : event.newValue;
 
+      if (field === 'title') {
+        const title = String(nextValue ?? '').trim();
+        if (!title) {
+          revert();
+          return;
+        }
+        onUpdateExpense({ ...data, title });
+        return;
+      }
+
+      if (field === 'category') {
+        const category = String(nextValue ?? '');
+        if (
+          !Object.values(EXPENSE_CATEGORIES).includes(
+            category as (typeof EXPENSE_CATEGORIES)[keyof typeof EXPENSE_CATEGORIES],
+          )
+        ) {
+          revert();
+          return;
+        }
+        onUpdateExpense({
+          ...data,
+          category: category as ExpenseProps['category'],
+        });
+        return;
+      }
+
+      if (field === 'type') {
+        const type = String(nextValue ?? '');
+        if (
+          !Object.values(EXPENSE_TYPES).includes(
+            type as (typeof EXPENSE_TYPES)[keyof typeof EXPENSE_TYPES],
+          )
+        ) {
+          revert();
+          return;
+        }
+        onUpdateExpense({ ...data, type: type as ExpenseProps['type'] });
+        return;
+      }
+
+      if (field === 'notes') {
+        onUpdateExpense({ ...data, notes: String(nextValue ?? '') });
+        return;
+      }
+
       onUpdateExpense({ ...data, [field]: nextValue });
     },
     [onUpdateExpense],
@@ -279,7 +329,7 @@ export function ExpenseGrid({
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-green-20 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800">
+        <Card className="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800">
           <p className="text-sm text-green-900 dark:text-green-400 font-medium">
             Total Income
           </p>
@@ -350,7 +400,7 @@ export function ExpenseGrid({
             </p>
           </div>
         ) : (
-          <div className="ag-theme-quartz-dark h-125">
+          <div className="ag-theme-quartz-dark h-[500px]">
             <AgGridReact
               rowData={expenses}
               columnDefs={columnDefs}

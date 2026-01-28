@@ -1,4 +1,4 @@
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import * as currencyApi from '../../services/currencyApi/currencyApi';
 import { useCurrencyConversion } from './useCurrencyConversion';
@@ -23,7 +23,11 @@ describe('useCurrencyConversion', () => {
     vi.mocked(currencyApi.fetchExchangeRates).mockResolvedValue({ USD: 0.012 });
     vi.mocked(currencyApi.convertCurrency).mockReturnValue(1.2);
     const { result } = renderHook(() => useCurrencyConversion(100));
-    result.current.handleChangeCurrency('USD' as const);
+
+    act(() => {
+      result.current.handleChangeCurrency('USD' as const);
+    });
+
     await waitFor(() => expect(result.current.convertedAmount).toBe(1.2));
   });
 });

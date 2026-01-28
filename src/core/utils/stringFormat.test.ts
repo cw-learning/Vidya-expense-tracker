@@ -30,4 +30,10 @@ describe('stringFormat', () => {
   it('handles empty string', () => {
     expect(stringFormat('')).toBe('');
   });
+
+  it('replaces falsy values', () => {
+    expect(
+      stringFormat('Count {0}, Enabled {1}, Empty "{2}"', 0, false, ''),
+    ).toBe('Count 0, Enabled false, Empty ""');
+  });
 });

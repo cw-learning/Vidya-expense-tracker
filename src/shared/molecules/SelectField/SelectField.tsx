@@ -25,9 +25,11 @@ export function SelectField({
 
   return (
     <div className={twMerge('relative', className)}>
-      <label htmlFor={selectId} className={LABEL_STYLES}>
-        {label}
-      </label>
+      {label ? (
+        <label htmlFor={selectId} className={LABEL_STYLES}>
+          {label}
+        </label>
+      ) : null}
       <select
         id={selectId}
         value={value}

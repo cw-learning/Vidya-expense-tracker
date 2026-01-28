@@ -6,7 +6,7 @@ export interface SelectOption {
 }
 
 export interface SelectFieldProps {
-  label: string;
+  label?: string;
   value: string;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   options: SelectOption[];

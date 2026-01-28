@@ -9,7 +9,7 @@ export function Button({
   variant = 'primary',
   className = '',
   disabled,
-  onClick,
+  ...buttonProps
 }: ButtonProps): JSX.Element {
   const buttonClasses = twMerge(
     BASE_STYLES,
@@ -19,10 +19,10 @@ export function Button({
 
   return (
     <button
+      {...buttonProps}
       type={type}
       disabled={disabled}
       aria-disabled={disabled || undefined}
-      onClick={onClick}
       className={buttonClasses}
     >
       {children}

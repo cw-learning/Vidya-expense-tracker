@@ -25,9 +25,11 @@ export function FormField({
 
   return (
     <div className={twMerge('relative', className)}>
-      <label htmlFor={inputId} className={LABEL_STYLES}>
-        {label}
-      </label>
+      {label ? (
+        <label htmlFor={inputId} className={LABEL_STYLES}>
+          {label}
+        </label>
+      ) : null}
       <input
         id={inputId}
         type={type}
