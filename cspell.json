@@ -1,0 +1,17 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "paths": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.css", "README.md"],
+  "ignorePaths": ["node_modules", "dist", "package-lock.json", "yarn.lock"],
+  "words": [
+    "vite",
+    "vitest",
+    "zustand",
+    "tanstack",
+    "tailwindcss",
+    "postcss",
+    "biome",
+    "biomejs",
+    "codewalnut"
+  ]
+}
