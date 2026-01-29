@@ -1,31 +1,49 @@
 import clsx from 'clsx';
-import type { JSX, MouseEvent } from 'react';
-import { BASE_STYLES, VARIANT_STYLES } from './Button.styles';
-import type { ButtonProps } from './Button.types';
+import type { MouseEvent, ReactElement } from 'react';
+import { baseButtonClassNames, variantButtonClassNames } from './Button.styles';
+import {
+  type ButtonProps,
+  ButtonType,
+  ButtonVariantType,
+} from './Button.types';
+
+const getButtonClassNames = (
+  variant: ButtonVariantType,
+  className?: string,
+): string => {
+  return clsx(
+    baseButtonClassNames,
+    variantButtonClassNames[variant],
+    className,
+  );
+};
 
 export function Button({
   children,
-  type = 'button',
-  variant = 'primary',
-  className = '',
+  type = ButtonType.BUTTON,
+  variant = ButtonVariantType.PRIMARY,
+  className,
   disabled,
+  loading,
   onClick,
-}: ButtonProps): JSX.Element {
+}: ButtonProps): ReactElement {
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
-    onClick?.(event);
+    if (!disabled && !loading) {
+      onClick?.(event);
+    }
   };
 
-  const buttonClasses = clsx(BASE_STYLES, VARIANT_STYLES[variant], className);
+  const isDisabled = disabled || loading;
 
   return (
     <button
       type={type}
-      disabled={disabled}
-      aria-disabled={disabled || undefined}
+      disabled={isDisabled}
+      aria-disabled={isDisabled || undefined}
       onClick={handleClick}
-      className={buttonClasses}
+      className={getButtonClassNames(variant, className)}
     >
-      {children}
+      {loading ? 'Loading...' : children}
     </button>
   );
 }

@@ -1,17 +1,18 @@
-import type { JSX } from 'react';
+import clsx from 'clsx';
+import type { ReactElement } from 'react';
 import type { ErrorMessageProps } from './ErrorMessage.types';
 
 export function ErrorMessage({
   message,
-  className = '',
-}: ErrorMessageProps): JSX.Element | null {
-  if (!message) {
-    return null;
-  }
+  className,
+}: ErrorMessageProps): ReactElement | null {
+  if (!message) return null;
+
+  const errorMessageClassNames = clsx('text-red-600 text-sm mt-1', className);
 
   return (
-    <p className={`text-sm text-red-600 mt-1 ${className}`} role="alert">
+    <div role="alert" className={errorMessageClassNames}>
       {message}
-    </p>
+    </div>
   );
 }

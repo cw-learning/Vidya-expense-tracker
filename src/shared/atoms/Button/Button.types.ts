@@ -1,6 +1,16 @@
 import type { MouseEvent, ReactNode } from 'react';
-export type ButtonType = 'button' | 'submit' | 'reset';
-export type ButtonVariantType = 'primary' | 'secondary' | 'danger';
+
+export enum ButtonType {
+  BUTTON = 'button',
+  SUBMIT = 'submit',
+  RESET = 'reset',
+}
+
+export enum ButtonVariantType {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+  DANGER = 'danger',
+}
 
 export interface ButtonProps {
   children: ReactNode;
@@ -8,5 +18,6 @@ export interface ButtonProps {
   variant?: ButtonVariantType;
   className?: string;
   disabled?: boolean;
+  loading?: boolean;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 }

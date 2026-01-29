@@ -1,4 +1,4 @@
-export const BASE_STYLES = `
+export const baseButtonClassNames = `
   px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-md
   transform cursor-pointer
   hover:shadow-lg 
@@ -7,7 +7,7 @@ export const BASE_STYLES = `
   disabled:hover:shadow-none disabled:active:scale-100
 `;
 
-export const VARIANT_STYLES = {
+export const variantButtonClassNames = {
   primary:
     'bg-teal-600 text-white hover:bg-teal-700 active:bg-teal-800 shadow-teal-200 disabled:active:bg-teal-600',
   secondary:
