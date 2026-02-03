@@ -1,4 +1,4 @@
-export interface Expense {
+export type ExpenseType = {
   id: string;
   title: string;
   amount: number;
@@ -6,22 +6,12 @@ export interface Expense {
   type: string;
   notes: string;
   createdAt: string;
-}
+};
 
-export interface ExpenseFormData {
+export type ExpenseFormDataType = {
   title: string;
   amount: string;
   category: string;
   type: string;
   notes: string;
-}
-
-export type ExpenseCategory =
-  | 'food'
-  | 'transport'
-  | 'entertainment'
-  | 'utilities'
-  | 'healthcare'
-  | 'shopping'
-  | 'other';
-export type ExpenseType = 'income' | 'expense';
+};

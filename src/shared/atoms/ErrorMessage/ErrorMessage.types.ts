@@ -1,4 +1,5 @@
 export interface ErrorMessageProps {
-  message?: string;
+  id?: string;
+  message?: string | null;
   className?: string;
 }

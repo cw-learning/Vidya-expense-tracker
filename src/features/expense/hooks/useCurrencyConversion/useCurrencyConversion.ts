@@ -8,16 +8,24 @@ import {
 type SupportedCurrency =
   (typeof SUPPORTED_CURRENCIES)[keyof typeof SUPPORTED_CURRENCIES];
 
+/**
+ * Custom hook for currency conversion functionality.
+ * Fetches exchange rates on mount and converts base amount when currency changes.
+ * Includes proper cleanup to prevent memory leaks.
+ *
+ * @param baseAmount - The base amount in INR to convert
+ * @returns Currency state including selected currency, converted amount, loading state, errors, and change handler
+ */
 export function useCurrencyConversion(baseAmount: number) {
   const [selectedCurrency, setSelectedCurrency] = useState<SupportedCurrency>(
     SUPPORTED_CURRENCIES.INR,
   );
-  const [convertedAmount, setConvertedAmount] = useState(baseAmount);
+  const [convertedAmount, setConvertedAmount] = useState<number>(baseAmount);
   const [exchangeRates, setExchangeRates] = useState<Record<
     string,
     number
   > | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,16 +55,16 @@ export function useCurrencyConversion(baseAmount: number) {
       return;
     }
     if (!exchangeRates) return;
-    const converted = convertCurrency(
+    const currency = convertCurrency(
       baseAmount,
       SUPPORTED_CURRENCIES.INR,
       selectedCurrency,
       exchangeRates,
     );
-    setConvertedAmount(converted);
+    setConvertedAmount(currency);
   }, [baseAmount, selectedCurrency, exchangeRates]);
 
-  const handleChangeCurrency = (currency: SupportedCurrency) =>
+  const onChangeCurrency = (currency: SupportedCurrency) =>
     setSelectedCurrency(currency);
 
   return {
@@ -64,6 +72,6 @@ export function useCurrencyConversion(baseAmount: number) {
     convertedAmount,
     isLoading,
     error,
-    handleChangeCurrency,
+    onChangeCurrency,
   };
 }

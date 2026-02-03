@@ -20,6 +20,13 @@ export const CURRENCY_SYMBOLS: Record<string, string> = {
   [SUPPORTED_CURRENCIES.EUR]: '€',
 };
 
+/**
+ * Fetches current exchange rates from the API.
+ *
+ * @param baseCurrency - Base currency for rates (defaults to INR)
+ * @param signal - Optional AbortSignal for request cancellation
+ * @returns Promise resolving to exchange rates object
+ */
 export async function fetchExchangeRates(
   baseCurrency = 'INR',
   signal?: AbortSignal,

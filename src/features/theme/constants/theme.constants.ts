@@ -1,11 +1,11 @@
-import type { ThemeColors, ThemeMode } from '../theme.types';
+import type { ThemeColorsType, ThemeModeType } from '../theme.types';
 
 export const THEME_MODES = {
   LIGHT: 'light',
   DARK: 'dark',
 } as const;
 
-export const THEME_COLORS: Record<ThemeMode, ThemeColors> = {
+export const THEME_COLORS: Record<ThemeModeType, ThemeColorsType> = {
   [THEME_MODES.LIGHT]: {
     background: 'bg-gradient-to-br from-slate-50 via-gray-50 to-zinc-50',
     text: 'text-gray-900',

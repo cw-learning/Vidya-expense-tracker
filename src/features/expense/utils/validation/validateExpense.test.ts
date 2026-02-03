@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import {
   validateExpense,
   validateExpenseAmount,
@@ -6,44 +7,101 @@ import {
 } from './validateExpense';
 
 describe('validateExpense', () => {
-  it('validates title correctly', () => {
-    expect(validateExpenseTitle('')).toBe('Title cannot be empty');
-    expect(validateExpenseTitle('Valid')).toBeNull();
-    expect(validateExpenseTitle(null)).toBe('Title is required');
-    expect(validateExpenseTitle('a'.repeat(101))).toBe(
-      'Title must be less than 100 characters',
-    );
+  describe('validateExpenseTitle', () => {
+    it('returns an error message when title is an empty string', () => {
+      const error = validateExpenseTitle('');
+
+      expect(error).toBe('Title cannot be empty');
+    });
+
+    it('returns null when title is valid and non-empty', () => {
+      const error = validateExpenseTitle('Valid');
+
+      expect(error).toBeNull();
+    });
+
+    it('returns an error message when title is null or undefined', () => {
+      const error = validateExpenseTitle(null);
+
+      expect(error).toBe('Title is required');
+    });
+
+    it('returns an error message when title exceeds the 100 character limit', () => {
+      const error = validateExpenseTitle('a'.repeat(101));
+
+      expect(error).toBe('Title must be less than 100 characters');
+    });
   });
 
-  it('validates amount correctly', () => {
-    expect(validateExpenseAmount('')).toBe('Amount is required');
-    expect(validateExpenseAmount('0')).toBe('Amount must be greater than zero');
-    expect(validateExpenseAmount('abc')).toBe('Amount must be a valid number');
-    expect(validateExpenseAmount('100')).toBeNull();
+  describe('validateExpenseAmount', () => {
+    it('returns an error message when amount is an empty string', () => {
+      const error = validateExpenseAmount('');
+
+      expect(error).toBe('Amount is required');
+    });
+
+    it('returns an error message when amount is zero', () => {
+      const error = validateExpenseAmount('0');
+
+      expect(error).toBe('Amount must be greater than zero');
+    });
+
+    it('returns an error message when amount contains non-numeric characters', () => {
+      const error = validateExpenseAmount('abc');
+
+      expect(error).toBe('Amount must be a valid number');
+    });
+
+    it('returns null when amount is a valid positive numeric string', () => {
+      const error = validateExpenseAmount('100');
+
+      expect(error).toBeNull();
+    });
   });
 
-  it('validates category correctly', () => {
-    expect(validateExpenseCategory('')).toBe('Category is required');
-    expect(validateExpenseCategory('invalid')).toBe(
-      'Invalid category selected',
-    );
-    expect(validateExpenseCategory('food')).toBeNull();
+  describe('validateExpenseCategory', () => {
+    it('returns an error message when category is an empty string', () => {
+      const error = validateExpenseCategory('');
+
+      expect(error).toBe('Category is required');
+    });
+
+    it('returns an error message when category is not in the list of valid categories', () => {
+      const error = validateExpenseCategory('invalid');
+
+      expect(error).toBe('Invalid category selected');
+    });
+
+    it('returns null when category is a valid option from the allowed list', () => {
+      const error = validateExpenseCategory('food');
+
+      expect(error).toBeNull();
+    });
   });
 
-  it('validates full expense object', () => {
-    const errors = validateExpense({ title: '', amount: '0' });
-    expect(errors.title).toBe('Title cannot be empty');
-    expect(errors.amount).toBe('Amount must be greater than zero');
-  });
+  describe('validateExpense', () => {
+    it('returns validation errors for multiple invalid fields simultaneously', () => {
+      const errors = validateExpense({ title: '', amount: '0' });
 
-  it('returns multiple errors for invalid expense', () => {
-    const errors = validateExpense({ title: '', amount: 'abc', category: '' });
-    expect(Object.keys(errors).length).toBeGreaterThan(1);
-  });
+      expect(errors.title).toBe('Title cannot be empty');
+      expect(errors.amount).toBe('Amount must be greater than zero');
+    });
 
-  it('handles null/undefined input', () => {
-    const errors = validateExpense(null);
-    expect(errors.title).toBeTruthy();
-    expect(errors.amount).toBeTruthy();
+    it('accumulates errors from all validation functions when all fields are invalid', () => {
+      const errors = validateExpense({
+        title: '',
+        amount: 'abc',
+        category: '',
+      });
+
+      expect(Object.keys(errors).length).toBeGreaterThan(1);
+    });
+
+    it('returns error messages for required fields when input is null or undefined', () => {
+      const errors = validateExpense(null);
+
+      expect(errors.title).toBeTruthy();
+      expect(errors.amount).toBeTruthy();
+    });
   });
 });

@@ -1,23 +1,37 @@
 import {
-  EXPENSE_CATEGORIES,
-  EXPENSE_TYPES,
+  ExpenseCategory,
+  ExpenseKind,
   NOTES_MAX_LENGTH,
 } from '../../constants/expense.constants';
 
+/**
+ * Validates the expense title field.
+ *
+ * @param title - The title to validate
+ * @returns Error message if invalid, null if valid
+ */
 export function validateExpenseTitle(
   title: string | null | undefined,
 ): string | null {
-  if (title == null || typeof title !== 'string') return 'Title is required';
+  if (title === null || title === undefined || typeof title !== 'string')
+    return 'Title is required';
   const trimmed = title.trim();
   if (!trimmed) return 'Title cannot be empty';
   if (trimmed.length > 100) return 'Title must be less than 100 characters';
   return null;
 }
 
+/**
+ * Validates the expense amount field.
+ *
+ * @param amount - The amount string to validate
+ * @returns Error message if invalid, null if valid
+ */
 export function validateExpenseAmount(
   amount: string | null | undefined,
 ): string | null {
-  if (amount == null || amount === '') return 'Amount is required';
+  if (amount === null || amount === undefined || amount === '')
+    return 'Amount is required';
   const num = Number(amount);
   if (Number.isNaN(num)) return 'Amount must be a valid number';
   if (num <= 0) return 'Amount must be greater than zero';
@@ -25,24 +39,42 @@ export function validateExpenseAmount(
   return null;
 }
 
+/**
+ * Validates the expense category field.
+ *
+ * @param category - The category to validate
+ * @returns Error message if invalid, null if valid
+ */
 export function validateExpenseCategory(
   category: string | null | undefined,
 ): string | null {
   if (!category) return 'Category is required';
-  const validCategories = Object.values(EXPENSE_CATEGORIES) as string[];
+  const validCategories = Object.values(ExpenseCategory) as string[];
   if (!validCategories.includes(category)) return 'Invalid category selected';
   return null;
 }
 
+/**
+ * Validates the expense type field.
+ *
+ * @param type - The type to validate
+ * @returns Error message if invalid, null if valid
+ */
 export function validateExpenseType(
   type: string | null | undefined,
 ): string | null {
   if (!type) return 'Type is required';
-  const validTypes = Object.values(EXPENSE_TYPES) as string[];
+  const validTypes = Object.values(ExpenseKind) as string[];
   if (!validTypes.includes(type)) return 'Invalid type selected';
   return null;
 }
 
+/**
+ * Validates the expense notes field.
+ *
+ * @param notes - The notes to validate
+ * @returns Error message if invalid, null if valid
+ */
 export function validateExpenseNotes(
   notes: string | null | undefined,
 ): string | null {

@@ -1,10 +1,14 @@
 import clsx from 'clsx';
-import { type JSX, useId } from 'react';
+import { type ReactElement, useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ErrorMessage } from '../../atoms/ErrorMessage/ErrorMessage';
-import { INPUT_STYLES, LABEL_STYLES } from './FormField.styles';
+import { formInputClassName, formLabelClassName } from './FormField.styles';
 import type { FormFieldProps } from './FormField.types';
 
+/**
+ * Form input field with label, error display, and accessibility features.
+ * Automatically generates unique IDs and manages error states.
+ */
 export function FormField({
   label,
   type = 'text',
@@ -13,19 +17,21 @@ export function FormField({
   error,
   placeholder,
   id,
-  className = '',
-}: FormFieldProps): JSX.Element {
+  className,
+}: FormFieldProps): ReactElement {
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const errorId = error ? `${inputId}-error` : undefined;
 
   const inputClasses = twMerge(
-    clsx(INPUT_STYLES, { 'border-red-500 focus:ring-red-500': !!error }),
+    clsx(formInputClassName, { 'border-red-500 focus:ring-red-500': !!error }),
   );
 
+  const containerClassNames = twMerge('relative', className);
+
   return (
-    <div className={twMerge('relative', className)}>
-      <label htmlFor={inputId} className={LABEL_STYLES}>
+    <div className={containerClassNames}>
+      <label htmlFor={inputId} className={formLabelClassName}>
         {label}
       </label>
       <input

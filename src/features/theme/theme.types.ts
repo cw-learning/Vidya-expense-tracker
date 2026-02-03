@@ -1,8 +1,8 @@
 import type { THEME_MODES } from './constants/theme.constants';
 
-export type ThemeMode = (typeof THEME_MODES)[keyof typeof THEME_MODES];
+export type ThemeModeType = (typeof THEME_MODES)[keyof typeof THEME_MODES];
 
-export interface ThemeColors {
+export type ThemeColorsType = {
   background: string;
   text: string;
   card: string;
@@ -17,4 +17,4 @@ export interface ThemeColors {
   shadow: string;
   cardGradient: string;
   totalCard: string;
-}
+};

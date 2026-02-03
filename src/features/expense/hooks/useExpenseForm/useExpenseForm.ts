@@ -1,29 +1,43 @@
+import type { FormEvent } from 'react';
 import { useState } from 'react';
-import { EXPENSE_TYPES } from '../../constants/expense.constants';
+import { ExpenseKind } from '../../constants/expense.constants';
 import { createExpense } from '../../models/expense.model';
-import type { Expense, ExpenseFormData } from '../../types/expense.types';
+import type {
+  ExpenseFormDataType,
+  ExpenseType,
+} from '../../types/expense.types';
 import { validateExpense } from '../../utils/validation/validateExpense';
 
-const INITIAL_FORM_STATE: ExpenseFormData = {
+const INITIAL_FORM_STATE: ExpenseFormDataType = {
   title: '',
   amount: '',
   category: '',
-  type: EXPENSE_TYPES.EXPENSE,
+  type: ExpenseKind.EXPENSE,
   notes: '',
 };
 
-export function useExpenseForm(onAddExpense: (expense: Expense) => void) {
-  const [formData, setFormData] = useState(INITIAL_FORM_STATE);
+/**
+ * Custom hook for managing expense form state, validation, and submission.
+ *
+ * @param onAddExpense - Callback function invoked when a valid expense is submitted
+ * @returns Form state, errors, field updater, and submit handler
+ */
+export function useExpenseForm(onAddExpense: (expense: ExpenseType) => void) {
+  const [formData, setFormData] =
+    useState<ExpenseFormDataType>(INITIAL_FORM_STATE);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  const updateField = (field: keyof ExpenseFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const updateField = (field: keyof ExpenseFormDataType, value: string) => {
+    setFormData((previousFormData) => ({
+      ...previousFormData,
+      [field]: value,
+    }));
     if (formErrors[field]) {
-      setFormErrors((prev) => ({ ...prev, [field]: '' }));
+      setFormErrors((previousErrors) => ({ ...previousErrors, [field]: '' }));
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const errors = validateExpense(formData);
     if (Object.keys(errors).length > 0) {

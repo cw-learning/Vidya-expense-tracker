@@ -1,15 +1,19 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { THEME_MODES, THEME_STORAGE_KEY } from '../constants/theme.constants';
-import type { ThemeMode } from '../theme.types';
+import type { ThemeModeType } from '../theme.types';
 
-interface ThemeStore {
-  theme: ThemeMode;
+type ThemeStoreType = {
+  theme: ThemeModeType;
   toggleTheme: () => void;
-  setTheme: (theme: ThemeMode) => void;
-}
+  setTheme: (theme: ThemeModeType) => void;
+};
 
-export const useThemeStore = create<ThemeStore>()(
+/**
+ * Zustand store for managing application theme state.
+ * Persists theme preference to localStorage.
+ */
+export const useThemeStore = create<ThemeStoreType>()(
   persist(
     (set) => ({
       theme: THEME_MODES.LIGHT,

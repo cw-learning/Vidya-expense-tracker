@@ -1,9 +1,9 @@
 import type { ChangeEvent } from 'react';
 
-export interface SelectOption {
+export type SelectOption = {
   value: string;
   label: string;
-}
+};
 
 export interface SelectFieldProps {
   label: string;

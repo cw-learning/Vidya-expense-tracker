@@ -1,10 +1,17 @@
 import clsx from 'clsx';
-import { type JSX, useId } from 'react';
+import { type ReactElement, useId } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { ErrorMessage } from '../../atoms/ErrorMessage/ErrorMessage';
-import { LABEL_STYLES, SELECT_STYLES } from './SelectField.styles';
+import {
+  selectFieldClassName,
+  selectLabelClassName,
+} from './SelectField.styles';
 import type { SelectFieldProps } from './SelectField.types';
 
+/**
+ * Form select/dropdown field with label, error display, and accessibility features.
+ * Automatically generates unique IDs and manages error states.
+ */
 export function SelectField({
   label,
   value,
@@ -13,26 +20,30 @@ export function SelectField({
   error,
   placeholder = 'Select an option',
   id,
-  className = '',
-}: SelectFieldProps): JSX.Element {
+  className,
+}: SelectFieldProps): ReactElement {
   const generatedId = useId();
   const selectId = id ?? generatedId;
   const errorId = error ? `${selectId}-error` : undefined;
 
-  const selectClasses = twMerge(
-    clsx(SELECT_STYLES, { 'border-red-500 focus:ring-red-500': !!error }),
+  const selectClassNames = twMerge(
+    clsx(selectFieldClassName, {
+      'border-red-500 focus:ring-red-500': !!error,
+    }),
   );
 
+  const containerClassNames = twMerge('relative', className);
+
   return (
-    <div className={twMerge('relative', className)}>
-      <label htmlFor={selectId} className={LABEL_STYLES}>
+    <div className={containerClassNames}>
+      <label htmlFor={selectId} className={selectLabelClassName}>
         {label}
       </label>
       <select
         id={selectId}
         value={value}
         onChange={onChange}
-        className={selectClasses}
+        className={selectClassNames}
         aria-invalid={!!error}
         aria-describedby={errorId}
       >

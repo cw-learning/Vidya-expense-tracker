@@ -1,21 +1,21 @@
-import type { JSX } from 'react';
+import type { ReactElement } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useThemeColors } from '../../../core/hooks/useThemeColors';
-import { CARD_STYLES } from './Card.styles';
+import { cardClassName } from './Card.styles';
 import type { CardProps } from './Card.types';
 
-export function Card({ children, className = '' }: CardProps): JSX.Element {
+/**
+ * Themed card container component.
+ * Automatically applies theme-based styling for cards.
+ */
+export function Card({ children, className }: CardProps): ReactElement {
   const colors = useThemeColors();
-  return (
-    <div
-      className={twMerge(
-        CARD_STYLES,
-        colors.card,
-        colors.cardBorder,
-        className,
-      )}
-    >
-      {children}
-    </div>
+  const cardClassNames = twMerge(
+    cardClassName,
+    colors.card,
+    colors.cardBorder,
+    className,
   );
+
+  return <div className={cardClassNames}>{children}</div>;
 }

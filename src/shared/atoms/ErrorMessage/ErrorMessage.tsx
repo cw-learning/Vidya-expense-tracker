@@ -2,6 +2,10 @@ import clsx from 'clsx';
 import type { ReactElement } from 'react';
 import type { ErrorMessageProps } from './ErrorMessage.types';
 
+/**
+ * Displays error or validation messages to users.
+ * Returns null when no message is provided for conditional rendering.
+ */
 export function ErrorMessage({
   id,
   message,
@@ -11,10 +15,8 @@ export function ErrorMessage({
 
   const errorMessageClassNames = clsx('text-red-600 text-sm mt-1', className);
 
-  const errorClasses = twMerge('text-sm text-red-600 mt-1', className);
-
   return (
-    <div role="alert" className={errorMessageClassNames}>
+    <div id={id} role="alert" className={errorMessageClassNames}>
       {message}
     </div>
   );

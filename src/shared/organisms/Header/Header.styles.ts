@@ -1,1 +1,1 @@
-export const HEADER_STYLES = 'mb-8 px-4 py-6';
+export const headerClassName = 'mb-8 px-4 py-6';
