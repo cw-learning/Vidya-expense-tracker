@@ -18,6 +18,10 @@ const getButtonClassNames = (
   );
 };
 
+/**
+ * Reusable Button component with multiple variants and states.
+ * Supports loading state, disabled state, and different visual styles.
+ */
 export function Button({
   children,
   type = ButtonType.BUTTON,

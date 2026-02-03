@@ -12,7 +12,7 @@ const renderComponent = (props?: Partial<ErrorMessageProps>) => {
 };
 
 describe('ErrorMessage', () => {
-  it('renders the message when provided', () => {
+  it('displays the error message with role="alert" for accessibility when a message is provided', () => {
     renderComponent({ message: 'This is an error' });
 
     const errorMessage = screen.getByRole('alert');
@@ -20,13 +20,13 @@ describe('ErrorMessage', () => {
     expect(errorMessage).toHaveTextContent('This is an error');
   });
 
-  it('returns null when no message is provided', () => {
+  it('renders nothing when no message prop is provided', () => {
     const { container } = renderComponent();
 
     expect(container.firstChild).toBeNull();
   });
 
-  it('returns null when message is empty string', () => {
+  it('renders nothing when an empty string is provided as the message', () => {
     const { container } = renderComponent({ message: '' });
 
     expect(container.firstChild).toBeNull();

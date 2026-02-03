@@ -5,7 +5,6 @@ import { Button } from './Button';
 import { type ButtonProps, ButtonType } from './Button.types';
 
 const mockHandleClick = vi.fn();
-let user: ReturnType<typeof userEvent.setup>;
 
 const renderComponent = (props?: Partial<ButtonProps>) => {
   const defaultProps: ButtonProps = {
@@ -16,12 +15,15 @@ const renderComponent = (props?: Partial<ButtonProps>) => {
 };
 
 describe('Button', () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
   beforeEach(() => {
     vi.clearAllMocks();
     user = userEvent.setup();
   });
+
   describe('Rendering', () => {
-    it('renders with default props', () => {
+    it('renders as an enabled button with type="button" when no props are specified', () => {
       renderComponent();
       const button = screen.getByRole('button', { name: /click me/i });
       expect(button).toBeInTheDocument();
@@ -29,13 +31,13 @@ describe('Button', () => {
       expect(button).not.toBeDisabled();
     });
 
-    it('renders with custom type', () => {
+    it('renders with the specified button type attribute', () => {
       renderComponent({ type: ButtonType.SUBMIT, children: 'Submit' });
       const button = screen.getByRole('button', { name: /submit/i });
       expect(button).toHaveAttribute('type', ButtonType.SUBMIT);
     });
 
-    it('renders children correctly', () => {
+    it('displays the content provided in the children prop', () => {
       renderComponent({ children: 'Custom Text' });
       const button = screen.getByRole('button', { name: /custom text/i });
       expect(button).toHaveTextContent('Custom Text');
@@ -43,7 +45,7 @@ describe('Button', () => {
   });
 
   describe('Disabled State', () => {
-    it('is disabled when disabled prop is true', () => {
+    it('becomes disabled and sets aria-disabled when disabled prop is true', () => {
       renderComponent({ disabled: true, children: 'Disabled' });
       const button = screen.getByRole('button', { name: /disabled/i });
       expect(button).toBeDisabled();
@@ -52,7 +54,7 @@ describe('Button', () => {
   });
 
   describe('Loading State', () => {
-    it('shows loading state', () => {
+    it('displays "Loading..." text and becomes disabled when loading prop is true', () => {
       renderComponent({ loading: true, children: 'Submit' });
       const button = screen.getByRole('button');
       expect(button).toHaveTextContent('Loading...');
@@ -61,7 +63,7 @@ describe('Button', () => {
   });
 
   describe('Click Handlers', () => {
-    it('calls onClick when clicked', async () => {
+    it('invokes the onClick handler when the button is clicked', async () => {
       renderComponent({ onClick: mockHandleClick, children: 'Clickable' });
       const button = screen.getByRole('button', { name: /clickable/i });
 
@@ -70,7 +72,7 @@ describe('Button', () => {
       expect(mockHandleClick).toHaveBeenCalledTimes(1);
     });
 
-    it('does not call onClick when disabled', async () => {
+    it('prevents onClick handler from being called when button is disabled', async () => {
       renderComponent({
         disabled: true,
         onClick: mockHandleClick,
@@ -83,7 +85,7 @@ describe('Button', () => {
       expect(mockHandleClick).not.toHaveBeenCalled();
     });
 
-    it('does not call onClick when loading', async () => {
+    it('prevents onClick handler from being called when button is in loading state', async () => {
       renderComponent({
         loading: true,
         onClick: mockHandleClick,
