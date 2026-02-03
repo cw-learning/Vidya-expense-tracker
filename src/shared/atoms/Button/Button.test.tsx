@@ -1,59 +1,101 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Button } from './Button';
+import { type ButtonProps, ButtonType } from './Button.types';
+
+const mockHandleClick = vi.fn();
+let user: ReturnType<typeof userEvent.setup>;
+
+const renderComponent = (props?: Partial<ButtonProps>) => {
+  const defaultProps: ButtonProps = {
+    children: 'Click me',
+    ...props,
+  };
+  return render(<Button {...defaultProps} />);
+};
 
 const mockHandleClick = vi.fn();
 
 describe('Button', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    user = userEvent.setup();
   });
-  it('renders with default props', () => {
-    render(<Button>Click me</Button>);
-    const button = screen.getByRole('button', { name: /click me/i });
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveAttribute('type', 'button');
-    expect(button).not.toBeDisabled();
-  });
+  describe('Rendering', () => {
+    it('renders with default props', () => {
+      renderComponent();
+      const button = screen.getByRole('button', { name: /click me/i });
+      expect(button).toBeInTheDocument();
+      expect(button).toHaveAttribute('type', ButtonType.BUTTON);
+      expect(button).not.toBeDisabled();
+    });
 
-  it('renders with custom type', () => {
-    render(<Button type="submit">Submit</Button>);
-    const button = screen.getByRole('button', { name: /submit/i });
-    expect(button).toHaveAttribute('type', 'submit');
-  });
+    it('renders with custom type', () => {
+      renderComponent({ type: ButtonType.SUBMIT, children: 'Submit' });
+      const button = screen.getByRole('button', { name: /submit/i });
+      expect(button).toHaveAttribute('type', ButtonType.SUBMIT);
+    });
 
-  it('is disabled when disabled prop is true', () => {
-    render(<Button disabled>Disabled</Button>);
-    const button = screen.getByRole('button', { name: /disabled/i });
-    expect(button).toBeDisabled();
-    expect(button).toHaveAttribute('aria-disabled', 'true');
-  });
-
-  it('calls onClick when clicked', async () => {
-    const user = userEvent.setup();
-
-    render(<Button onClick={mockHandleClick}>Clickable</Button>);
-
-    const button = screen.getByRole('button', { name: /clickable/i });
-    await user.click(button);
-
-    expect(mockHandleClick).toHaveBeenCalledTimes(1);
+    it('renders children correctly', () => {
+      renderComponent({ children: 'Custom Text' });
+      const button = screen.getByRole('button', { name: /custom text/i });
+      expect(button).toHaveTextContent('Custom Text');
+    });
   });
 
-  it('does not call onClick when disabled', async () => {
-    const user = userEvent.setup();
+  describe('Disabled State', () => {
+    it('is disabled when disabled prop is true', () => {
+      renderComponent({ disabled: true, children: 'Disabled' });
+      const button = screen.getByRole('button', { name: /disabled/i });
+      expect(button).toBeDisabled();
+      expect(button).toHaveAttribute('aria-disabled', 'true');
+    });
+  });
 
-    render(
-      <Button disabled onClick={mockHandleClick}>
-        Disabled Click
-      </Button>,
-    );
+  describe('Loading State', () => {
+    it('shows loading state', () => {
+      renderComponent({ loading: true, children: 'Submit' });
+      const button = screen.getByRole('button');
+      expect(button).toHaveTextContent('Loading...');
+      expect(button).toBeDisabled();
+    });
+  });
 
-    const button = screen.getByRole('button', { name: /disabled click/i });
+  describe('Click Handlers', () => {
+    it('calls onClick when clicked', async () => {
+      renderComponent({ onClick: mockHandleClick, children: 'Clickable' });
+      const button = screen.getByRole('button', { name: /clickable/i });
 
-    await user.click(button);
+      await user.click(button);
 
-    expect(mockHandleClick).not.toHaveBeenCalled();
+      expect(mockHandleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not call onClick when disabled', async () => {
+      renderComponent({
+        disabled: true,
+        onClick: mockHandleClick,
+        children: 'Disabled Click',
+      });
+      const button = screen.getByRole('button', { name: /disabled click/i });
+
+      await user.click(button);
+
+      expect(mockHandleClick).not.toHaveBeenCalled();
+    });
+
+    it('does not call onClick when loading', async () => {
+      renderComponent({
+        loading: true,
+        onClick: mockHandleClick,
+        children: 'Submit',
+      });
+      const button = screen.getByRole('button');
+
+      await user.click(button);
+
+      expect(mockHandleClick).not.toHaveBeenCalled();
+    });
   });
 });

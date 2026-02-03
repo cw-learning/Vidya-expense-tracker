@@ -1,31 +1,49 @@
-import type { JSX } from 'react';
-import { twMerge } from 'tailwind-merge';
-import { BASE_STYLES, VARIANT_STYLES } from './Button.styles';
-import type { ButtonProps } from './Button.types';
+import clsx from 'clsx';
+import type { MouseEvent, ReactElement } from 'react';
+import { baseButtonClassNames, variantButtonClassNames } from './Button.styles';
+import {
+  type ButtonProps,
+  ButtonType,
+  ButtonVariantType,
+} from './Button.types';
+
+const getButtonClassNames = (
+  variant: ButtonVariantType,
+  className?: string,
+): string => {
+  return clsx(
+    baseButtonClassNames,
+    variantButtonClassNames[variant],
+    className,
+  );
+};
 
 export function Button({
   children,
-  type = 'button',
-  variant = 'primary',
-  className = '',
+  type = ButtonType.BUTTON,
+  variant = ButtonVariantType.PRIMARY,
+  className,
   disabled,
+  loading,
   onClick,
-}: ButtonProps): JSX.Element {
-  const buttonClasses = twMerge(
-    BASE_STYLES,
-    VARIANT_STYLES[variant],
-    className,
-  );
+}: ButtonProps): ReactElement {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    if (!disabled && !loading) {
+      onClick?.(event);
+    }
+  };
+
+  const isDisabled = disabled || loading;
 
   return (
     <button
       type={type}
-      disabled={disabled}
-      aria-disabled={disabled || undefined}
-      onClick={onClick}
-      className={buttonClasses}
+      disabled={isDisabled}
+      aria-disabled={isDisabled || undefined}
+      onClick={handleClick}
+      className={getButtonClassNames(variant, className)}
     >
-      {children}
+      {loading ? 'Loading...' : children}
     </button>
   );
 }
